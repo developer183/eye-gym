@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1C8C76" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#07191F" media="(prefers-color-scheme: dark)">
-<meta name="description" content="給遠視／弱視孩子的近距離精細目力訓練小遊戲">
+<meta name="theme-color" content="#0E2B33" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#06161B" media="(prefers-color-scheme: dark)">
+<meta name="description" content="給遠視／弱視孩子的每日近距離精細目力練習，自動找到適合的視標大小，並產生回診時可以給醫師看的紀錄">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -17,145 +17,197 @@
 <link rel="stylesheet" href="fonts.css">
 <style>
 :root{
-  --paper:#EFF4F2; --surface:#FFFFFF; --sunken:#E5ECE9;
-  --fg:#0E2B33; --muted:#5C757F; --line:#D7E2DF;
-  --mint:#1C8C76; --mint-soft:#DAF0E9;
-  --sun:#D99A12; --coral:#CE5742;
-  --shadow:0 1px 2px rgba(14,43,51,.05), 0 10px 26px -14px rgba(14,43,51,.28);
-  --pcsh:rgba(0,0,0,.42);
-  /* 拉丁字體自帶（fonts.css），中文走系統字體——iOS 是蘋方、Android 是 Noto Sans CJK，
-     都已經在裝置上，不用下載，離線也不會掉字。 */
+  --paper:#F2F6F4; --surface:#FFFFFF; --sunken:#E6EDEA;
+  --fg:#0E2B33; --muted:#5B757E; --line:#D6E2DE;
+  --go:#148873; --go-soft:#D7EFE8;
+  /* 五個關卡的樣式沿用舊名，這三個是給它們用的別名 */
+  --mint:#148873; --mint-soft:#D7EFE8; --sun:#D9922A; --pcsh:rgba(0,0,0,.42);
+  --amber:#D9922A; --amber-soft:#FBEDD6; --warn:#C6553F;
+  --ink:#0E2B33; --onink:#DCEDE8; --onink-dim:#8FB2AB;
+  --shadow:0 1px 2px rgba(14,43,51,.05), 0 12px 28px -16px rgba(14,43,51,.35);
+  --lift:0 2px 6px rgba(14,43,51,.07), 0 18px 36px -18px rgba(14,43,51,.45);
   --cjk:'PingFang TC','Noto Sans CJK TC','Noto Sans TC','Microsoft JhengHei',sans-serif;
   --display:'Fredoka',var(--cjk);
   --body:-apple-system,BlinkMacSystemFont,'Segoe UI',var(--cjk);
   --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --paper:#07191F; --surface:#0E2E36; --sunken:#0A2229;
-    --fg:#DBEAE6; --muted:#88A6AD; --line:#1B424C;
-    --mint:#4EC5A8; --mint-soft:#0D3936;
-    --sun:#EDC15A; --coral:#E67B66;
-    --shadow:0 1px 2px rgba(0,0,0,.45), 0 12px 30px -16px rgba(0,0,0,.8);
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#07191F; --surface:#0E2E36; --sunken:#0A2229;
-  --fg:#DBEAE6; --muted:#88A6AD; --line:#1B424C;
-  --mint:#4EC5A8; --mint-soft:#0D3936;
-  --sun:#EDC15A; --coral:#E67B66;
-  --shadow:0 1px 2px rgba(0,0,0,.45), 0 12px 30px -16px rgba(0,0,0,.8);
-}
-
-*{box-sizing:border-box}
-/* :root 讓出瀏海與底部 home bar 的空間；app 才能滿版又不被切到 */
-:root{color-scheme:light dark;
+  color-scheme:light dark;
   padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px)}
-/* 必要：.iconbtn 的 display:grid、.chip 的 inline-flex 會蓋掉瀏覽器預設的 [hidden] */
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#06161B; --surface:#0E2730; --sunken:#0B1F26;
+  --fg:#DCEDE8; --muted:#86A6A0; --line:#1B3B44;
+  --go:#3FBFA2; --go-soft:#0C332F; --mint:#3FBFA2; --mint-soft:#0C332F; --sun:#E8B45E; --pcsh:rgba(0,0,0,.78); --amber:#E8B45E; --amber-soft:#2F2516; --warn:#E07A62;
+  --ink:#0A1E24; --onink:#DCEDE8; --onink-dim:#7FA09A;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 14px 30px -18px rgba(0,0,0,.8);
+  --lift:0 2px 6px rgba(0,0,0,.5), 0 20px 40px -20px rgba(0,0,0,.9);
+} }
+:root[data-theme="dark"]{
+  --paper:#06161B; --surface:#0E2730; --sunken:#0B1F26;
+  --fg:#DCEDE8; --muted:#86A6A0; --line:#1B3B44;
+  --go:#3FBFA2; --go-soft:#0C332F; --mint:#3FBFA2; --mint-soft:#0C332F; --sun:#E8B45E; --pcsh:rgba(0,0,0,.78); --amber:#E8B45E; --amber-soft:#2F2516; --warn:#E07A62;
+  --ink:#0A1E24; --onink:#DCEDE8; --onink-dim:#7FA09A;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 14px 30px -18px rgba(0,0,0,.8);
+  --lift:0 2px 6px rgba(0,0,0,.5), 0 20px 40px -20px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
 [hidden]{display:none!important}
 img{max-width:100%}
 html,body{height:100%}
-body{margin:0;background:var(--paper);color:var(--fg);font-family:var(--body);-webkit-text-size-adjust:100%;overscroll-behavior:none}
-button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
-:focus-visible{outline:3px solid var(--mint);outline-offset:2px;border-radius:6px}
+body{margin:0;background:var(--paper);color:var(--fg);font-family:var(--body);
+  -webkit-text-size-adjust:100%;overscroll-behavior:none;
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;
+  -webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--go);outline-offset:2px;border-radius:10px}
 
 #app{min-height:100%;display:flex;flex-direction:column}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:8px;
+  padding:10px 16px;max-width:460px;width:100%;margin:0 auto;
+  background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(12px)}
+.bar.line{border-bottom:1px solid var(--line)}
+.who{display:flex;align-items:center;gap:6px;padding:5px 11px 5px 7px;border-radius:999px;
+  background:var(--surface);border:1px solid var(--line);font-size:13.5px;font-weight:500;max-width:52vw}
+.who .av{width:22px;height:22px;border-radius:50%;background:var(--go);color:#fff;
+  display:grid;place-items:center;font-size:11.5px;font-weight:700;flex:none}
+.who .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.who .cv{color:var(--muted);font-size:10px}
+.spacer{flex:1}
+.stk{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;
+  background:var(--amber-soft);color:var(--amber);font-size:12.5px;font-weight:700;
+  font-variant-numeric:tabular-nums}
+.iconbtn{width:36px;height:36px;display:grid;place-items:center;border-radius:11px;
+  font-size:19px;color:var(--muted)}
+.iconbtn:active{background:var(--sunken)}
 
-/* ---- top bar ---- */
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:10px;
-  padding:10px 16px;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--line)}
-.bar .brand{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.02em;margin-right:auto}
-.iconbtn{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;font-size:18px;line-height:1;color:var(--muted)}
-.iconbtn:hover{background:var(--sunken);color:var(--fg)}
-.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;font-size:12px;
-  border:1px solid var(--line);background:var(--surface);white-space:nowrap}
-.chip .dot{width:7px;height:7px;border-radius:50%;background:var(--coral)}
-.chip.time{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--muted)}
-
-/* ---- shared page shell ---- */
-/* 直板：整個 app 鎖在手機寬度，橫著開也不會變成寬版面 */
 .page{flex:1;display:none;flex-direction:column;padding:0 16px;max-width:460px;width:100%;margin:0 auto}
-.bar{max-width:460px;margin:0 auto;width:100%}
-.page.on{display:flex}
-.pad{padding-block:18px 28px}
-
-h1{font-family:var(--display);font-weight:600;font-size:26px;line-height:1.25;margin:0 0 6px;text-wrap:balance}
-h2{font-family:var(--display);font-weight:600;font-size:15px;margin:26px 0 10px;letter-spacing:.04em;
+.page.on{display:flex;animation:pagein .26s cubic-bezier(.22,.9,.3,1)}
+@keyframes pagein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pad{padding-block:4px 30px}
+h1{font-family:var(--display);font-weight:600;font-size:25px;line-height:1.3;margin:0 0 6px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:12px;margin:26px 0 10px;letter-spacing:.09em;
   text-transform:uppercase;color:var(--muted)}
-p.lede{margin:0 0 18px;color:var(--muted);font-size:14px;line-height:1.7;max-width:46ch}
+p.lede{margin:0 0 16px;color:var(--muted);font-size:13.5px;line-height:1.75;max-width:44ch}
 
-/* ---- game menu ---- */
-.cards{display:grid;gap:10px}
-.card{display:flex;align-items:center;gap:14px;padding:14px;border-radius:16px;background:var(--surface);
-  border:1px solid var(--line);box-shadow:var(--shadow);text-align:left;width:100%;transition:transform .12s ease}
-.card:active{transform:scale(.985)}
-.card .thumb{flex:none;width:56px;height:56px;border-radius:12px;background:var(--sunken);display:grid;place-items:center;
-  --fgt:var(--fg);--bgf:var(--sunken)}
-.card .t{font-family:var(--display);font-weight:600;font-size:16px;margin-bottom:2px}
-.card .d{font-size:12.5px;color:var(--muted);line-height:1.5}
-.card .tag{font-size:11px;color:var(--mint);font-weight:500;margin-top:4px;display:block}
+/* ---- 今日：主角 ---- */
+.today{background:var(--ink);color:var(--onink);border-radius:24px;padding:22px 20px 20px;
+  box-shadow:var(--lift);position:relative;overflow:hidden}
+.today::after{content:'';position:absolute;right:-70px;top:-70px;width:200px;height:200px;
+  border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--go) 26%,transparent),transparent 68%)}
+.today .lbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--onink-dim);
+  font-weight:600;position:relative}
+.ringwrap{display:flex;align-items:center;gap:18px;margin:14px 0 16px;position:relative}
+.ring{flex:none;width:96px;height:96px}
+.ring .trk{fill:none;stroke:rgba(255,255,255,.14);stroke-width:9}
+.ring .val{fill:none;stroke:var(--go);stroke-width:9;stroke-linecap:round;
+  transition:stroke-dashoffset .6s cubic-bezier(.3,.9,.3,1)}
+.ring .big{font-family:var(--display);font-weight:600;font-size:25px;fill:var(--onink);
+  text-anchor:middle;font-variant-numeric:tabular-nums}
+.ring .sub{font-size:10px;fill:var(--onink-dim);text-anchor:middle}
+.facts{display:flex;flex-direction:column;gap:9px;min-width:0}
+.fact{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--onink-dim)}
+.fact b{color:var(--onink);font-weight:600;font-variant-numeric:tabular-nums}
+.fact .dot{width:7px;height:7px;border-radius:50%;background:var(--warn);flex:none}
+.go{width:100%;padding:16px;border-radius:16px;background:var(--go);color:#04221C;
+  font-family:var(--display);font-weight:600;font-size:16.5px;position:relative;
+  transition:transform .12s ease}
+.go:active{transform:scale(.98)}
+.go.done{background:rgba(255,255,255,.14);color:var(--onink)}
 
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.ghost{padding:12px;border-radius:14px;border:1px solid var(--line);background:transparent;font-size:14px;
-  display:flex;align-items:center;justify-content:center;gap:7px}
-.ghost:hover{background:var(--surface)}
+/* ---- 本週 ---- */
+.week{display:flex;gap:6px;margin-top:14px}
+.week .d{flex:1;text-align:center}
+.week .d i{display:block;height:34px;border-radius:9px;background:var(--sunken);
+  margin-bottom:5px;position:relative;overflow:hidden}
+.week .d i b{position:absolute;left:0;right:0;bottom:0;background:var(--go);display:block}
+.week .d.now i{box-shadow:inset 0 0 0 2px var(--go)}
+.week .d span{font-size:10.5px;color:var(--muted);font-family:var(--mono)}
 
-details.note{margin-top:26px;border-top:1px solid var(--line);padding-top:14px}
+/* ---- 列表卡 ---- */
+.rows{display:grid;gap:9px}
+.row{display:flex;align-items:center;gap:13px;padding:14px;border-radius:15px;background:var(--surface);
+  border:1px solid var(--line);box-shadow:var(--shadow);text-align:left;width:100%;
+  transition:transform .12s ease}
+.row:active{transform:scale(.985)}
+.row .ic{flex:none;width:42px;height:42px;border-radius:12px;background:var(--sunken);
+  display:grid;place-items:center;--fgt:var(--fg);--bgf:var(--sunken)}
+.row .t{font-family:var(--display);font-weight:600;font-size:15px}
+.row .d{font-size:12px;color:var(--muted);line-height:1.5;margin-top:1px}
+.row .go2{color:var(--muted);font-size:17px;flex:none}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
+.ghost{padding:13px;border-radius:14px;border:1px solid var(--line);font-size:13.5px;
+  display:flex;align-items:center;justify-content:center;gap:7px;background:transparent}
+.ghost:active{background:var(--surface)}
+
+/* ---- 報告 ---- */
+.hero{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px;
+  box-shadow:var(--shadow);text-align:center}
+.hero .k{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.hero .v{font-family:var(--display);font-weight:600;font-size:44px;line-height:1.1;margin:4px 0 2px;
+  font-variant-numeric:tabular-nums}
+.hero .v small{font-size:17px;color:var(--muted);font-weight:400}
+.hero .n{font-size:12.5px;color:var(--muted);line-height:1.6}
+.stats{display:flex;gap:9px;margin-top:9px}
+.stat{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:11px}
+.stat .k{font-size:10.5px;color:var(--muted);letter-spacing:.04em}
+.stat .v{font-family:var(--display);font-size:21px;font-weight:600;font-variant-numeric:tabular-nums}
+.stat .v small{font-size:11px;color:var(--muted);font-weight:400}
+.trend{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 12px 10px;
+  margin-top:9px}
+.trend svg{width:100%;height:auto;display:block}
+.tr-line{fill:none;stroke:var(--go);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.tr-dot{fill:var(--go)}
+.tr-grid{stroke:var(--line);stroke-width:1}
+.tr-lbl{font-size:9px;fill:var(--muted);font-family:'IBM Plex Mono',monospace}
+.bars{display:grid;gap:11px;margin-top:4px}
+.gb .hd{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.gb .nm{font-size:13.5px;font-weight:500;margin-right:auto}
+.gb .pcnt{font-family:var(--mono);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.meter{height:7px;border-radius:99px;background:var(--sunken);overflow:hidden}
+.meter i{display:block;height:100%;border-radius:99px;background:var(--go)}
+.empty{color:var(--muted);font-size:13px;line-height:1.85;padding:20px 0}
+
+/* ---- 設定 ---- */
+.set{padding:14px 0;border-bottom:1px solid var(--line)}
+.set:last-child{border-bottom:0}
+.set .lab{font-size:14px;font-weight:500;margin-bottom:3px}
+.set .sub{font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:10px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{padding:9px 14px;border-radius:11px;border:1px solid var(--line);font-size:13.5px;
+  background:var(--surface);transition:background .15s,border-color .15s}
+.seg button[aria-pressed="true"]{background:var(--go);border-color:var(--go);color:#04221C;font-weight:600}
+input[type=range]{width:100%;accent-color:var(--go)}
+input[type=text]{width:100%;padding:12px 13px;border-radius:12px;border:1px solid var(--line);
+  background:var(--surface);color:var(--fg);font:inherit;-webkit-user-select:text;user-select:text}
+.calbox{margin-top:10px;background:var(--sunken);border-radius:13px;padding:13px}
+.cardline{height:54px;border:2px dashed var(--go);border-radius:7px;margin:0 auto 10px}
+.readout{font-family:var(--mono);font-size:11.5px;color:var(--go);font-variant-numeric:tabular-nums;margin-top:9px}
+details.note{margin-top:22px;border-top:1px solid var(--line);padding-top:14px}
 details.note summary{font-size:13px;color:var(--muted);cursor:pointer;list-style:none}
 details.note summary::-webkit-details-marker{display:none}
-details.note summary::before{content:'▸ ';color:var(--mint)}
+details.note summary::before{content:'▸ ';color:var(--go)}
 details.note[open] summary::before{content:'▾ '}
-details.note .body{font-size:13px;line-height:1.8;color:var(--muted);margin-top:10px;max-width:46ch}
+details.note .body{font-size:12.5px;line-height:1.85;color:var(--muted);margin-top:10px;max-width:44ch}
 details.note .body b{color:var(--fg);font-weight:500}
 details.note .body ul{margin:8px 0;padding-left:18px}
 
-/* ---- settings ---- */
-.set{padding:14px 0;border-bottom:1px solid var(--line)}
-.set .lab{font-size:14px;font-weight:500;margin-bottom:3px}
-.set .hint{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px}
-.seg{display:flex;gap:6px;flex-wrap:wrap}
-.seg button{padding:8px 13px;border-radius:10px;border:1px solid var(--line);font-size:13px;background:var(--surface)}
-.seg button[aria-pressed="true"]{background:var(--mint);border-color:var(--mint);color:#fff;font-weight:500}
-.readout{font-family:var(--mono);font-size:12px;color:var(--mint);font-variant-numeric:tabular-nums;margin-top:9px}
-
-/* calibration */
-.calcard{margin-top:10px;background:var(--sunken);border-radius:12px;padding:12px}
-.cardoutline{height:54px;border:2px dashed var(--mint);border-radius:7px;margin:0 auto 10px}
-input[type=range]{width:100%;accent-color:var(--mint)}
-
-/* ---- log ---- */
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
-  padding:0 0 8px;border-bottom:1px solid var(--line)}
-td{padding:10px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
-td.num{font-family:var(--mono);text-align:right}
-.totals{display:flex;gap:10px;margin-bottom:20px}
-.tot{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
-.tot .k{font-size:11px;color:var(--muted);letter-spacing:.05em}
-.tot .v{font-family:var(--display);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
-.tot .v small{font-size:12px;font-weight:400;color:var(--muted)}
-.empty{color:var(--muted);font-size:13px;line-height:1.8;padding:24px 0}
-
-/* ---- play screen ---- */
-#play{padding-block:10px 16px;gap:10px}
+/* ---- 訓練中 ---- */
+#play{padding-block:8px 16px;gap:10px}
+.mins{display:flex;align-items:center;gap:9px}
+.mins .trk2{flex:1;height:6px;border-radius:99px;background:var(--sunken);overflow:hidden}
+.mins .trk2 i{display:block;height:100%;background:var(--go);border-radius:99px;
+  transition:width .5s cubic-bezier(.3,.9,.3,1)}
+.mins .n{font-family:var(--mono);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pbar{height:4px;border-radius:99px;background:var(--sunken);overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--go);border-radius:99px;transition:width .3s ease}
 .prompt{display:flex;align-items:center;gap:12px;min-height:44px}
 .prompt .txt{font-size:15px;font-weight:500;line-height:1.4}
-.prompt .txt em{font-style:normal;color:var(--mint);font-weight:700}
+.prompt .txt em{font-style:normal;color:var(--go);font-weight:700}
 .prompt .ref{flex:none;display:grid;place-items:center;--fgt:var(--fg);--bgf:var(--paper)}
-.objs{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
-.obj{display:inline-flex;align-items:center;gap:5px;padding:4px 10px 4px 5px;border-radius:999px;
-  background:var(--surface);border:1px solid var(--line);font-size:12.5px;font-weight:600;
-  font-variant-numeric:tabular-nums;transition:background .25s,border-color .25s,color .25s}
-.obj img{width:24px;height:24px;display:block}
-.obj.done{background:var(--mint-soft);border-color:var(--mint);color:var(--mint)}
-.pbar{height:5px;border-radius:99px;background:var(--sunken);overflow:hidden}
-.pbar i{display:block;height:100%;background:var(--mint);border-radius:99px;transition:width .3s ease}
-#field{flex:1;min-height:340px;border-radius:18px;display:grid;place-items:center;padding:12px;
-  background:var(--bgf);border:1px solid var(--line);overflow:hidden;touch-action:none;
-  -webkit-user-select:none;user-select:none}
+#field{flex:1;min-height:320px;border-radius:18px;display:grid;place-items:center;padding:12px;
+  background:var(--bgf);border:1px solid var(--line);overflow:hidden;touch-action:none}
 
+/* ---- 以下是五個關卡的樣式，沿用原本測過的版本 ---- */
 .grid{display:grid;justify-content:center;align-content:center;gap:var(--gap)}
 .cellbtn{display:grid;place-items:center;border-radius:10px;padding:0;background:transparent;line-height:0}
 .cellbtn.hit{background:var(--mint-soft)}
@@ -216,173 +268,400 @@ td.num{font-family:var(--mono);text-align:right}
 .tools button:active{background:var(--mint);color:#fff}
 .tools button:disabled{opacity:.4}
 
-/* ---- overlays ---- */
+
+/* ---- 覆蓋層 ---- */
 .sheet{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;
-  background:color-mix(in srgb,var(--paper) 82%,transparent);backdrop-filter:blur(6px)}
-.sheet .box{background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);
-  padding:26px 22px;max-width:340px;width:100%;text-align:center}
+  background:color-mix(in srgb,var(--paper) 84%,transparent);backdrop-filter:blur(8px);
+  animation:fade .2s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet .box{background:var(--surface);border:1px solid var(--line);border-radius:24px;
+  box-shadow:var(--lift);padding:26px 22px;max-width:340px;width:100%;text-align:center;
+  animation:rise .28s cubic-bezier(.22,.9,.3,1)}
+@keyframes rise{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
 .sheet h3{font-family:var(--display);font-weight:600;font-size:21px;margin:0 0 6px}
-.sheet p{font-size:13.5px;color:var(--muted);line-height:1.7;margin:0}
-.stars{font-size:28px;letter-spacing:6px;margin:14px 0 4px;color:var(--sun)}
-.score{display:flex;gap:16px;justify-content:center;margin:16px 0 20px}
-.score div{flex:1}
-.score .k{font-size:11px;color:var(--muted);letter-spacing:.05em}
+.sheet p{font-size:13.5px;color:var(--muted);line-height:1.75;margin:0}
+.stars{font-size:29px;letter-spacing:6px;margin:14px 0 2px;color:var(--amber)}
+.score{display:flex;gap:14px;justify-content:center;margin:16px 0 20px}
+.score .k{font-size:10.5px;color:var(--muted);letter-spacing:.05em}
 .score .v{font-family:var(--display);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
-.primary{width:100%;padding:13px;border-radius:13px;background:var(--mint);color:#fff;font-weight:500;font-size:15px}
-.link{margin-top:10px;font-size:13.5px;color:var(--muted);width:100%;padding:8px}
-.big{font-family:var(--display);font-size:56px;font-weight:600;color:var(--mint);font-variant-numeric:tabular-nums;margin:8px 0}
+.primary{width:100%;padding:14px;border-radius:14px;background:var(--go);color:#04221C;
+  font-weight:600;font-size:15.5px;font-family:var(--display)}
+.link{margin-top:10px;font-size:13.5px;color:var(--muted);width:100%;padding:9px}
+.restnum{font-family:var(--display);font-size:58px;font-weight:600;color:var(--go);
+  font-variant-numeric:tabular-nums;margin:8px 0}
+
+/* ---- 第一次設定 ---- */
+.steps{display:flex;gap:6px;margin:0 0 20px}
+.steps i{flex:1;height:4px;border-radius:99px;background:var(--sunken)}
+.steps i.on{background:var(--go)}
+
+/* ---- 回診報告卡 ---- */
+.rpt{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;
+  box-shadow:var(--shadow)}
+.rpt h4{font-family:var(--display);font-size:16px;margin:0 0 2px;font-weight:600}
+.rpt .meta{font-size:11.5px;color:var(--muted);margin-bottom:14px;font-family:var(--mono)}
+.rpt table{width:100%;border-collapse:collapse;font-size:13px}
+.rpt td{padding:7px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.rpt td:last-child{text-align:right;font-family:var(--mono);font-weight:600}
+.rpt .foot{font-size:11px;color:var(--muted);line-height:1.7;margin-top:12px}
+
+/* ---- 安裝提示 ---- */
+.install{margin-top:16px;background:var(--go-soft);border-radius:14px;padding:13px 14px;
+  font-size:12.5px;line-height:1.7;color:var(--fg)}
+.install b{font-weight:600}
 </style>
 </head>
 
 <body>
 <div id="app">
-  <header class="bar">
-    <button class="iconbtn" id="back" hidden aria-label="回到選單">←</button>
-    <div class="brand">目力練功房</div>
-    <span class="chip" id="patchChip" hidden><span class="dot"></span><span id="patchTxt"></span></span>
-    <span class="chip time"><span id="clock">0</span>&nbsp;分</span>
+  <header class="bar" id="topbar">
+    <button class="iconbtn" id="back" hidden aria-label="返回">←</button>
+    <button class="who" id="who" hidden>
+      <span class="av" id="av"></span><span class="nm" id="whoName"></span><span class="cv">▾</span>
+    </button>
+    <span class="spacer"></span>
+    <span class="stk" id="streak" hidden></span>
   </header>
 
-  <!-- ============ 選單 ============ -->
-  <main class="page on pad" id="menu">
-    <h1>今天練哪一樣？</h1>
-    <p class="lede">四個都是近距離的細活：戴著矯正眼鏡、手機拿在大約 <b>30 公分</b>，照醫師指示遮住另一隻眼再開始。</p>
-    <div class="cards" id="cards"></div>
-    <div class="row">
-      <button class="ghost" data-go="settings">⚙︎ 設定</button>
-      <button class="ghost" data-go="log">📋 訓練紀錄</button>
+  <!-- ============ 今日 ============ -->
+  <main class="page on pad" id="home">
+    <section class="today">
+      <div class="lbl" id="todayLbl">今天</div>
+      <div class="ringwrap">
+        <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="trk" cx="50" cy="50" r="42"/>
+          <circle class="val" id="ringVal" cx="50" cy="50" r="42"
+            transform="rotate(-90 50 50)" stroke-dasharray="264" stroke-dashoffset="264"/>
+          <text class="big" x="50" y="50" id="ringBig">0</text>
+          <text class="sub" x="50" y="64" id="ringSub">分鐘</text>
+        </svg>
+        <div class="facts" id="facts"></div>
+      </div>
+      <button class="go" id="goBtn">開始今天的訓練</button>
+    </section>
+
+    <h2>本週</h2>
+    <div class="week" id="week"></div>
+
+    <h2>其他</h2>
+    <div class="rows">
+      <button class="row" data-go="report">
+        <div class="ic">📈</div>
+        <div style="flex:1"><div class="t">進度與回診報告</div>
+          <div class="d" id="reportSub">看她現在穩定做得到多小的視標</div></div>
+        <div class="go2">›</div>
+      </button>
+      <button class="row" data-go="free">
+        <div class="ic">🎯</div>
+        <div style="flex:1"><div class="t">自由練習</div>
+          <div class="d">單獨玩某一關，不計入今天的訓練</div></div>
+        <div class="go2">›</div>
+      </button>
+      <button class="row" data-go="settings">
+        <div class="ic">⚙︎</div>
+        <div style="flex:1"><div class="t">設定</div>
+          <div class="d" id="setSub">醫囑、畫面、螢幕校準</div></div>
+        <div class="go2">›</div>
+      </button>
+    </div>
+    <div class="install" id="installHint" hidden>
+      <b>把它加到主畫面</b>，開起來就是全螢幕的 app，而且完全不需要網路。<br>
+      Safari：分享 → 加入主畫面。Chrome：選單 → 加到主畫面。
     </div>
 
     <details class="note">
-      <summary>家長須知：這套遊戲在練什麼</summary>
+      <summary>家長須知：這個 app 在做什麼、不做什麼</summary>
       <div class="body">
-        <p><b>小螢幕本身不會矯正遠視。</b>遠視靠眼鏡矯正；這裡練的是「近距離精細目力工作」——弱視訓練的標準作法，用細小的近距離目標逼弱視眼認真工作。</p>
+        <p><b>小螢幕本身不會矯正遠視。</b>遠視靠眼鏡矯正。這裡練的是「近距離精細目力工作」——
+        用細小的近距離目標逼弱視眼認真工作，是弱視訓練的常見輔助作法。</p>
         <ul>
-          <li><b>一定戴著矯正眼鏡</b>做，不然等於白練。</li>
-          <li><b>遮哪一隻眼、每天幾分鐘</b>請照醫師指示，設定裡可以登記。</li>
-          <li>距離維持 30 公分左右，太近反而不好。</li>
-          <li>每 10 分鐘會跳出休息提醒，看遠 20 秒（20-20-20）。</li>
-          <li>「精細度」拉到孩子<b>剛好還做得到</b>的那一級——太難會放棄，太簡單沒有訓練效果。</li>
+          <li><b>一定戴著矯正眼鏡</b>做，不然等於白練</li>
+          <li><b>遮哪一隻眼、每天幾分鐘</b>請照眼科醫師指示，在設定裡登記</li>
+          <li>距離維持 30 公分左右，太近反而不好</li>
+          <li>每隔一段時間會跳出休息提醒，看遠 20 秒</li>
         </ul>
-        <p>訓練紀錄可以截圖給醫師看，回診時討論要不要調整難度。這是輔助練習，不是治療，也不能取代回診。</p>
+        <p><b>這不是醫療器材，也不能治療疾病。</b>它是一個把練習時間記下來、
+        並自動調整難度的工具，不能取代回診與醫師的處方。
+        「進度與回診報告」可以截圖給醫師看，讓他判斷要不要調整。</p>
       </div>
     </details>
   </main>
 
-  <!-- ============ 遊玩 ============ -->
+  <!-- ============ 自由練習 ============ -->
+  <main class="page pad" id="free">
+    <h1>自由練習</h1>
+    <p class="lede">單獨玩某一關。時間一樣會記錄，但不算在今天的訓練進度裡。</p>
+    <div class="rows" id="freeList"></div>
+  </main>
+
+  <!-- ============ 訓練中 ============ -->
   <main class="page" id="play">
+    <div class="mins" id="minsRow">
+      <div class="trk2"><i id="minsBar"></i></div><span class="n" id="minsN"></span>
+    </div>
     <div class="pbar"><i id="pbar"></i></div>
     <div class="prompt"><div class="ref" id="promptRef"></div><div class="txt" id="promptTxt"></div></div>
     <div id="field"></div>
     <div id="extra"></div>
   </main>
 
+  <!-- ============ 進度與報告 ============ -->
+  <main class="page pad" id="report">
+    <h1>進度</h1>
+    <div class="hero">
+      <div class="k">目前穩定做得到</div>
+      <div class="v" id="stableV">—</div>
+      <div class="n" id="stableN"></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="k">連續天數</div><div class="v" id="stStreak">0</div></div>
+      <div class="stat"><div class="k">本週</div><div class="v" id="stWeek">0<small> 分</small></div></div>
+      <div class="stat"><div class="k">累積</div><div class="v" id="stTotal">0<small> 分</small></div></div>
+    </div>
+    <h2>視標大小的變化</h2>
+    <div class="trend" id="trend"></div>
+    <h2>各關表現</h2>
+    <div class="bars" id="bars"></div>
+    <h2>回診報告</h2>
+    <p class="lede">截圖這一張給醫師看。數字都是這個 app 自己量到的，不是醫學檢查。</p>
+    <div class="rpt" id="rpt"></div>
+  </main>
+
   <!-- ============ 設定 ============ -->
   <main class="page pad" id="settings">
     <h1>設定</h1>
-    <p class="lede">改完直接回選單就會套用，下次打開還在。</p>
 
+    <h2>醫囑</h2>
     <div class="set">
-      <div class="lab">精細度</div>
-      <div class="hint">決定圖案多小。從中間開始試，孩子做得很順就往右一格。</div>
-      <div class="seg" id="segLevel"></div>
-      <div class="readout" id="levelOut"></div>
+      <div class="lab">今天遮哪隻眼</div>
+      <div class="sub">照眼科醫師的指示設定。沒有交代就留「不遮」——自己加遮眼可能壓抑到好的那隻眼。</div>
+      <div class="seg" id="segPatch"></div>
+    </div>
+    <div class="set">
+      <div class="lab">每天練幾分鐘</div>
+      <div class="sub">今天的訓練會照這個長度自動排關卡，排滿就結束。</div>
+      <div class="seg" id="segMinutes"></div>
+    </div>
+    <div class="set">
+      <div class="lab">休息提醒</div>
+      <div class="sub">每累積這麼多分鐘，跳出 20 秒看遠提醒。</div>
+      <div class="seg" id="segRest"></div>
     </div>
 
+    <h2>難度</h2>
+    <div class="set">
+      <div class="lab">視標大小</div>
+      <div class="sub" id="lvSub"></div>
+      <div class="seg" id="segAuto"></div>
+      <div style="margin-top:10px"><div class="seg" id="segLevel"></div></div>
+      <div class="readout" id="levelOut"></div>
+    </div>
     <div class="set">
       <div class="lab">對比</div>
-      <div class="hint">圖案和底色的差距。降低對比會明顯變難，通常等精細度練到頂了再動。</div>
+      <div class="sub">圖案和底色的差距。精細度練到頂了再降對比，會明顯變難。</div>
       <div class="seg" id="segContrast"></div>
     </div>
 
+    <h2>畫面與聲音</h2>
     <div class="set">
-      <div class="lab">今天遮哪隻眼</div>
-      <div class="hint">只是提醒用，會顯示在最上面那一排。實際側別請照醫師指示。</div>
-      <div class="seg" id="segPatch"></div>
-    </div>
-
-    <div class="set">
-      <div class="lab">單次時間</div>
-      <div class="hint">累積到就會提醒收工。</div>
-      <div class="seg" id="segMinutes"></div>
-    </div>
-
-    <div class="set">
-      <div class="lab">畫面</div>
-      <div class="hint">夜間改成深底白圖，對比一樣，比較不刺眼。</div>
+      <div class="lab">夜間模式</div>
+      <div class="sub">改成深底白圖，對比一樣，比較不刺眼。</div>
       <div class="seg" id="segNight"></div>
-      <div class="hint" style="margin-top:14px">音效是即時合成的，音量刻意壓低。在公共場所或需要安靜時關掉。</div>
-      <div class="seg" id="segSound"></div>
     </div>
-
     <div class="set">
-      <div class="lab">「三個一組」的畫面</div>
-      <div class="hint">彩色比較好玩；單色會逼孩子只靠形狀分辨，難度明顯提高。</div>
+      <div class="lab">「三個一組」的圖案</div>
+      <div class="sub">單色會逼她只靠形狀分辨，難度明顯提高。</div>
       <div class="seg" id="segColor"></div>
-      <div class="hint" style="margin-top:14px">花樣背景本身就是難度（視知覺裡的「圖形背景辨別」）。孩子找得很吃力就切回素面。</div>
+    </div>
+    <div class="set">
+      <div class="lab">「三個一組」的背景</div>
+      <div class="sub">花樣背景本身就是難度（圖形背景辨別）。找得很吃力就切回素面。</div>
       <div class="seg" id="segBg"></div>
     </div>
+    <div class="set">
+      <div class="lab">音效</div>
+      <div class="sub">即時合成，沒有音檔。在公共場所或飛機上可以關掉。</div>
+      <div class="seg" id="segSound"></div>
+    </div>
+    <div class="set">
+      <div class="lab">震動回饋</div>
+      <div class="sub">答對答錯時輕震一下。iPhone 的 Safari 不支援，設了也不會動。</div>
+      <div class="seg" id="segHaptic"></div>
+    </div>
 
-    <div class="set" style="border-bottom:0">
-      <div class="lab">螢幕校準（選用）</div>
-      <div class="hint">拿一張健保卡或悠遊卡貼著螢幕，拖到虛線框跟卡片一樣寬，上面的毫米數才會準。</div>
-      <div class="calcard">
-        <div class="cardoutline" id="calBox"></div>
+    <h2>螢幕校準</h2>
+    <div class="set">
+      <div class="lab">用一張卡片對齊</div>
+      <div class="sub">拿健保卡或悠遊卡貼著螢幕，拖到虛線框跟卡片一樣寬。校準後視標的毫米數才準。</div>
+      <div class="calbox">
+        <div class="cardline" id="calBox"></div>
         <input type="range" id="calRange" min="180" max="420" step="1" aria-label="卡片寬度校準">
         <div class="readout" id="calOut"></div>
       </div>
     </div>
+
+    <h2>孩子</h2>
+    <div class="set">
+      <div class="lab">名字</div>
+      <div class="sub">只存在這台裝置裡。</div>
+      <input type="text" id="kidName" maxlength="12" placeholder="孩子的名字">
+    </div>
+    <div class="set">
+      <div class="lab">切換或新增</div>
+      <div class="sub">每個孩子的醫囑、難度與紀錄都分開。</div>
+      <div class="seg" id="segKids"></div>
+      <div class="duo" style="margin-top:10px">
+        <button class="ghost" id="addKid">＋ 新增孩子</button>
+        <button class="ghost" id="delKid">刪除這一位</button>
+      </div>
+    </div>
+
+    <details class="note">
+      <summary>這個 app 的定位與限制</summary>
+      <div class="body">
+        <p><b>不是醫療器材，不能治療疾病。</b>它做兩件事：把練習時間記下來，
+        以及自動找到她目前剛好做得到的視標大小。</p>
+        <p>「穩定做得到的視標大小」是這個 app 自己量的，<b>不是視力檢查</b>。
+        手機螢幕能顯示的最小視標大約落在視力 0.2 上下，再小就畫不出缺口了。
+        這個數字只適合用來看<b>趨勢</b>，不能當成視力值。</p>
+        <p>遮眼側別與每日時間一律以眼科醫師的指示為準。</p>
+        <p>所有資料只存在這台裝置的瀏覽器裡，沒有帳號、沒有上傳、沒有任何對外連線。</p>
+      </div>
+    </details>
   </main>
 
-  <!-- ============ 紀錄 ============ -->
-  <main class="page pad" id="log">
-    <h1>訓練紀錄</h1>
-    <p class="lede">存在這台裝置裡，沒有上傳任何地方。回診前截圖給醫師看。</p>
-    <div class="totals">
-      <div class="tot"><div class="k">今天</div><div class="v" id="totToday">0<small> 分</small></div></div>
-      <div class="tot"><div class="k">近 7 天</div><div class="v" id="totWeek">0<small> 分</small></div></div>
-      <div class="tot"><div class="k">總場次</div><div class="v" id="totN">0</div></div>
-    </div>
-    <div id="logTable"></div>
+  <!-- ============ 第一次設定 ============ -->
+  <main class="page pad" id="onboard">
+    <div class="steps" id="obSteps"><i class="on"></i><i></i><i></i></div>
+    <div id="obBody"></div>
   </main>
 </div>
 
 <script>
 'use strict';
 /* =======================================================================
-   目力練功房 — 近距離精細目力訓練小遊戲
-   視標大小以毫米為單位計算，換算成 30 公分處的視角，維持刺激一致。
+   目力練功房
+   每天一次的近距離精細目力練習。核心有三件事：
+   1. 今天該練多久、遮哪隻眼 —— 照醫囑，app 負責排關卡與計時
+   2. 視標大小自動找 —— 用正確率與反應時間往她的能力邊界逼
+   3. 回診時給得出數字 —— 趨勢比單次分數有用
+   資料只存在這台裝置，沒有帳號、沒有上傳、沒有任何對外連線。
    ======================================================================= */
-
 const $ = s => document.querySelector(s);
-const el = (t, cls) => { const n = document.createElement(t); if (cls) n.className = cls; return n; };
+const el = (t, c) => { const n = document.createElement(t); if (c) n.className = c; return n; };
 const rnd = n => Math.floor(Math.random() * n);
 const pick = a => a[rnd(a.length)];
 const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = rnd(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-
-/* ---------- 設定 ---------- */
-const LEVELS = [14, 10, 7, 5, 3.5, 2.5];          // 視標邊長 (mm)
-const CONTRAST = { high: .92, mid: .55, low: .26 }; // 目標與底色的明度差
-const VIEW_MM = 300;                                // 假設觀看距離 30 公分
-const CSS_PX_PER_MM = 96 / 25.4;
-const CARD_MM = 85.6;                               // 信用卡／健保卡寬度
-
-const S = { level: 3, contrast: 'high', patch: 'none', minutes: 10, night: false, color: true, bg: true, sound: true, calPx: 0 };
-
-function load(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }
+const uniq = a => [...new Set(a)];
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+function load(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } }
 function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+const DAY = 864e5;
+const today = () => new Date(Date.now() - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+const dayAgo = n => new Date(Date.now() - n * DAY - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
 
-Object.assign(S, load('mlgf.settings', {}));
-let LOG = load('mlgf.log', []);
-
-const pxPerMm = () => S.calPx > 0 ? S.calPx / CARD_MM : CSS_PX_PER_MM;
-const mm = v => v * pxPerMm();
-const sizeMm = () => LEVELS[S.level - 1];
-/** 視標缺口在 30cm 處張開的角度（分角），再換算成十進位視力 */
+/* ---------- 視標刻度 ---------- */
+const LEVELS = [14, 10, 7, 5, 3.5, 2.5];          // 視標邊長（公釐）
+const CONTRAST = { high: .92, mid: .55, low: .26 };
+const VIEW_MM = 300;                               // 假設觀看距離 30 公分
+const CSS_PX_PER_MM = 96 / 25.4;
+const CARD_MM = 85.6;                              // 信用卡／健保卡寬度
+/** 視標缺口在 30 公分處張開的角度（分角），換算成十進位視力 */
 const acuity = m => 1 / ((m / 5) / VIEW_MM * 3437.7468);
 
-/* ---------- 音效：全部即時合成，不載任何音檔 ----------
-   第一次點擊才會建立 AudioContext（瀏覽器規定要有使用者動作）。 */
+/* ---------- 多個孩子 ---------- */
+const newKid = name => ({
+  id: 'k' + Date.now().toString(36) + rnd(999).toString(36),
+  name: name || '寶貝', patch: 'none', minutes: 10, rest: 10,
+  level: 3, auto: true, contrast: 'high', calPx: 0, born: today()
+});
+let KIDS = load('eg.kids', []);
+let CURID = load('eg.cur', null);
+let P = load('eg.pref', { night: false, color: true, bg: true, sound: true, haptic: true });
+let K = null, D = null;
+
+const blankData = () => ({ perf: {}, g: {}, days: {}, log: [] });
+function useKid(id) {
+  K = KIDS.find(k => k.id === id) || KIDS[0];
+  if (!K) return;
+  CURID = K.id; save('eg.cur', CURID);
+  D = load('eg.d.' + K.id, blankData());
+  for (const f of ['perf', 'g', 'days', 'log']) D[f] = D[f] || (f === 'log' ? [] : {});
+  syncS();
+}
+const saveKid = () => { save('eg.kids', KIDS); syncS(); };
+const saveData = () => save('eg.d.' + K.id, D);
+
+/* S 是關卡程式直接讀的那一份設定。孩子的（視標、對比）跟裝置的（夜間、音效）
+   來源不同，但關卡只認得一個 S，所以在這裡合起來。 */
+const S = { level: 3, contrast: 'high', night: false, color: true, bg: true, sound: true };
+function syncS() {
+  if (K) { S.level = K.level; S.contrast = K.contrast; }
+  S.night = P.night; S.color = P.color; S.bg = P.bg; S.sound = P.sound;
+  if (typeof applyField === 'function') applyField();
+}
+const pxPerMm = () => (K && K.calPx > 0) ? K.calPx / CARD_MM : CSS_PX_PER_MM;
+const mm = v => v * pxPerMm();
+const sizeMm = () => LEVELS[S.level - 1];
+
+/* ---------- 自適應：往她的能力邊界逼 ----------
+   只有「視標大小是限制因素」的關卡才拿來調難度。小缺口是校準過的蘭氏環，
+   找一樣的是細節辨別——這兩關的表現才代表解析力。
+   迷宮、數字接龍、三個一組練的是搜尋與追蹤，答錯不代表看不清楚。 */
+const ACUITY_GAMES = new Set(['gap', 'same']);
+const WIN = 24, UP_ACC = .85, UP_N = 12, DOWN_ACC = .60, DOWN_N = 8, FAST_MS = 4500;
+
+function note(game, ok, ms) {
+  if (!K) return;
+  const g = (D.g[game] = D.g[game] || []);
+  g.push(ok ? 1 : 0); if (g.length > 80) g.splice(0, g.length - 80);
+  if (!ACUITY_GAMES.has(game)) return;
+  const a = (D.perf[K.level] = D.perf[K.level] || []);
+  a.push({ ok: ok ? 1 : 0, ms: Math.round(ms) });
+  if (a.length > WIN) a.splice(0, a.length - WIN);
+}
+function levelStat(L) {
+  const a = D.perf[L] || []; if (!a.length) return null;
+  const ms = a.map(x => x.ms).sort((p, q) => p - q);
+  return { n: a.length, acc: a.reduce((s, x) => s + x.ok, 0) / a.length, med: ms[ms.length >> 1] };
+}
+/** 回傳 'up' / 'down' / null。升級後把新一級的樣本清空，重新量。 */
+function adapt() {
+  if (!K || !K.auto) return null;
+  const s = levelStat(K.level); if (!s) return null;
+  if (s.n >= UP_N && s.acc >= UP_ACC && s.med <= FAST_MS && K.level < LEVELS.length) {
+    K.level++; D.perf[K.level] = []; saveKid(); saveData(); return 'up';
+  }
+  if (s.n >= DOWN_N && s.acc < DOWN_ACC && K.level > 1) {
+    K.level--; saveKid(); saveData(); return 'down';
+  }
+  return null;
+}
+/** 最細的、樣本夠多且正確率站得住的那一級——這才是回診要講的數字 */
+function stableLevel() {
+  for (let L = LEVELS.length; L >= 1; L--) {
+    const s = levelStat(L);
+    if (s && s.n >= 10 && s.acc >= .80) return L;
+  }
+  return null;
+}
+
+/* ---------- 每日紀錄 ---------- */
+function dayRec(d) {
+  const t = d || today();
+  return (D.days[t] = D.days[t] || { sec: 0, done: 0, rounds: 0, lv: K.level, met: false });
+}
+function streakDays() {
+  let n = 0;
+  for (let i = 0; i < 400; i++) {
+    const r = D.days[dayAgo(i)];
+    if (r && r.met) n++;
+    else if (i > 0) break;            // 今天還沒做完不算斷
+    else if (!r || !r.met) continue;
+  }
+  return n;
+}
+function haptic(ms) { if (P.haptic && navigator.vibrate) { try { navigator.vibrate(ms); } catch {} } }
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let AC = null;
 function actx() {
@@ -1253,34 +1532,120 @@ const GAMES = {
 /* =======================================================================
    流程
    ======================================================================= */
-let view = 'menu', round = null, tick = null;
-let sessionSec = load('mlgf.session', { d: today(), s: 0 });
-if (sessionSec.d !== today()) sessionSec = { d: today(), s: 0 };
-let restMark = Math.floor(sessionSec.s / 600);
-
-function today() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+let view = 'home', round = null, SESS = null, tick = null, qT0 = 0;
+const GORDER = ['gap', 'pile', 'same', 'maze', 'schulte'];
 
 function show(v) {
   document.querySelectorAll('.page').forEach(p => p.classList.toggle('on', p.id === v));
-  $('#back').hidden = v === 'menu';
   view = v;
+  const top = v !== 'onboard';
+  $('#back').hidden = !(top && v !== 'home');
+  $('#who').hidden = !(top && v === 'home');
+  $('#streak').hidden = !(top && v === 'home');
+  $('#topbar').classList.toggle('line', v === 'play');
   window.scrollTo(0, 0);
+  if (v === 'home') renderHome();
+  if (v === 'free') renderFree();
+  if (v === 'report') renderReport();
+  if (v === 'settings') renderSettings();
 }
 
-function startGame(id) {
+/* ---------- 今日 ---------- */
+function renderHome() {
+  const r = dayRec(), target = K.minutes * 60;
+  const pct = clamp(r.done / target, 0, 1);
+  $('#ringVal').style.strokeDashoffset = String(264 * (1 - pct));
+  $('#ringBig').textContent = Math.floor(r.done / 60);
+  $('#ringSub').textContent = '／' + K.minutes + ' 分';
+  $('#todayLbl').textContent = r.met ? '今天已完成' : '今天';
+
+  const lv = LEVELS[K.level - 1];
+  $('#facts').innerHTML =
+    (K.patch === 'none'
+      ? `<div class="fact">沒有設定遮眼</div>`
+      : `<div class="fact"><span class="dot"></span>遮<b>${K.patch === 'left' ? '左' : '右'}眼</b></div>`) +
+    `<div class="fact">視標 <b>${lv} mm</b>${K.auto ? '（自動）' : ''}</div>` +
+    `<div class="fact">戴著眼鏡、拿 <b>30 公分</b></div>`;
+
+  const go = $('#goBtn');
+  go.classList.toggle('done', r.met);
+  go.textContent = r.met ? '再練一輪' : (r.done > 0 ? '繼續今天的訓練' : '開始今天的訓練');
+
+  const st = streakDays();
+  $('#streak').hidden = st < 1;
+  $('#streak').textContent = '🔥 連續 ' + st + ' 天';
+  $('#whoName').textContent = K.name;
+  $('#av').textContent = [...K.name][0] || '？';
+
+  const wk = $('#week'); wk.replaceChildren();
+  for (let i = 6; i >= 0; i--) {
+    const d = dayAgo(i), rec = D.days[d];
+    const h = rec ? clamp(rec.done / (K.minutes * 60), 0, 1) : 0;
+    const c = el('div', 'd' + (i === 0 ? ' now' : ''));   // 不能叫 today，會撞到主卡的 .today
+    c.innerHTML = `<i><b style="height:${Math.round(h * 100)}%"></b></i>
+      <span>${'日一二三四五六'[new Date(d + 'T00:00').getDay()]}</span>`;
+    wk.append(c);
+  }
+  const sl = stableLevel();
+  $('#reportSub').textContent = sl
+    ? `目前穩定做得到 ${LEVELS[sl - 1]} mm 的視標`
+    : '練幾輪之後這裡會出現她的視標大小';
+  $('#setSub').textContent = `${K.patch === 'none' ? '未設遮眼' : '遮' + (K.patch === 'left' ? '左' : '右') + '眼'}・每天 ${K.minutes} 分`;
+  $('#installHint').hidden = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+}
+
+function renderFree() {
+  const host = $('#freeList'); host.replaceChildren();
+  GORDER.forEach(id => {
+    const g = GAMES[id];
+    const b = el('button', 'row');
+    b.innerHTML = `<div class="ic">${g.thumb()}</div>
+      <div style="flex:1"><div class="t">${g.name}</div><div class="d">${g.desc}</div></div>
+      <div class="go2">›</div>`;
+    b.onclick = () => startFree(id);
+    host.append(b);
+  });
+  applyField();
+}
+
+/* ---------- 一場訓練 ---------- */
+function startDay() {
+  // 今天的份已經做完還按「再練一輪」的話，就當加碼：跑一輪就好，不再要求達標
+  const bonus = dayRec().done >= K.minutes * 60;
+  SESS = { plan: ['gap', ...shuffle(GORDER.filter(g => g !== 'gap'))], i: 0, free: false, bonus };
+  runNext();
+}
+function startFree(id) { SESS = { plan: [id], i: 0, free: true }; runNext(); }
+
+function runNext() {
+  if (!SESS.free && !SESS.bonus && dayRec().done >= K.minutes * 60) return endDay();
+  const id = SESS.plan[SESS.i % SESS.plan.length];
+  SESS.i++;
+  runGame(id);
+}
+
+function runGame(id) {
   const g = GAMES[id];
   round = { id, idx: 0, total: g.rounds, ok: 0, bad: 0, streak: 0, t0: performance.now() };
   show('play');
+  $('#minsRow').hidden = !!SESS.free;
   applyField();
   clearInterval(tick);
   tick = setInterval(() => {
-    sessionSec.s++;
-    save('mlgf.session', sessionSec);
-    $('#clock').textContent = Math.floor(sessionSec.s / 60);
+    const r = dayRec();
+    r.sec++; if (!SESS.free) r.done++;
+    if (r.sec % 10 === 0) saveData();
+    paintMins();
   }, 1000);
+  paintMins();
   requestAnimationFrame(() => requestAnimationFrame(nextQ));
 }
-
+function paintMins() {
+  if (SESS && SESS.free) return;
+  const r = dayRec(), t = K.minutes * 60;
+  $('#minsBar').style.width = clamp(r.done / t, 0, 1) * 100 + '%';
+  $('#minsN').textContent = Math.floor(r.done / 60) + '／' + K.minutes + ' 分';
+}
 const bar = () => $('#pbar').style.width = (round.idx / Math.max(1, round.total) * 100) + '%';
 
 function nextQ() {
@@ -1288,64 +1653,86 @@ function nextQ() {
   bar();
   if (round.idx >= round.total) return finish();
   $('#extra').replaceChildren();
+  qT0 = performance.now();
   g.render($('#field'), {
     pass: () => {
-      round.ok++; round.idx++;
-      // continuous 的關卡只畫一次，靠進度條推進，不重畫畫面
+      note(round.id, true, performance.now() - qT0);
+      qT0 = performance.now();
+      round.ok++; round.idx++; haptic(12);
       if (g.continuous) { bar(); if (round.idx >= round.total) { g.cleanup?.(); finish(); } }
       else setTimeout(nextQ, 380);
     },
-    miss: () => { round.bad++; },
+    miss: () => { note(round.id, false, performance.now() - qT0); round.bad++; haptic([12, 60, 12]); },
     setTotal: n => { round.total = n; bar(); },
     fail: (title, msg) => {
       g.cleanup?.(); clearInterval(tick);
       sheet(`<h3>${title}</h3><p>${msg}</p>`, [
-        ['再來一次', () => { close_(); startGame(round.id); }],
-        ['回選單', () => { close_(); show('menu'); }, 'link']
+        ['再來一次', () => { close_(); runGame(round.id); }],
+        ['結束', () => { close_(); afterRound(); }, 'link']
       ]);
     }
   });
 }
 
 function finish() {
-  const g = GAMES[round.id];
-  g.cleanup?.();
+  GAMES[round.id].cleanup?.();
   clearInterval(tick);
   const sec = Math.round((performance.now() - round.t0) / 1000);
   const acc = round.ok / Math.max(1, round.ok + round.bad);
   const stars = acc >= .9 ? 3 : acc >= .7 ? 2 : 1;
+  const r = dayRec(); r.rounds++; r.lv = K.level;
+  D.log.unshift({ t: Date.now(), g: round.id, lv: K.level, ct: K.contrast, ok: round.ok, bad: round.bad, sec });
+  D.log = D.log.slice(0, 80);
+  const moved = adapt();
+  saveData();
 
-  LOG.unshift({ d: today(), t: Date.now(), g: round.id, lv: S.level, ct: S.contrast, ok: round.ok, bad: round.bad, sec });
-  LOG = LOG.slice(0, 60);
-  save('mlgf.log', LOG);
+  const movedTxt = moved === 'up'
+    ? `<p style="color:var(--go);font-weight:600;margin-top:10px">做得很穩，視標縮小到 ${LEVELS[K.level - 1]} mm</p>`
+    : moved === 'down'
+      ? `<p style="margin-top:10px">這個大小有點吃力，先退回 ${LEVELS[K.level - 1]} mm</p>` : '';
 
-  const overMin = sessionSec.s >= S.minutes * 60;
-  const needRest = Math.floor(sessionSec.s / 600) > restMark;
-  sfx.win();
-
-  sheet(`<h3>${overMin ? '今天到這裡就好' : '過關！'}</h3>
+  sheet(`<h3>${GAMES[round.id].name} 完成</h3>
     <div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div>
     <div class="score">
       <div><div class="k">答對</div><div class="v">${round.ok}</div></div>
       <div><div class="k">答錯</div><div class="v">${round.bad}</div></div>
       <div><div class="k">用時</div><div class="v">${sec}<small>秒</small></div></div>
-    </div>
-    ${overMin ? `<p>已經練了 ${Math.floor(sessionSec.s / 60)} 分鐘，達到今天設定的時間了。</p>`
-      : `<p>${g.name}・精細度 ${S.level}（${sizeMm()} mm）</p>`}`,
-    overMin ? [['回選單', () => { close_(); show('menu'); }]]
-      : [['再來一次', () => { close_(); startGame(round.id); }], ['回選單', () => { close_(); show('menu'); }, 'link']],
-    () => { if (needRest) { restMark = Math.floor(sessionSec.s / 600); rest(); } });
+    </div>${movedTxt}`,
+    [['繼續', () => { close_(); afterRound(); }]],
+    () => {});
 }
 
-/* ---------- 20-20-20 休息 ---------- */
-function rest() {
+function afterRound() {
+  if (SESS.free) return show('home');
+  const r = dayRec();
+  if (SESS.bonus) return show('home');          // 加碼只跑一輪
+  if (r.done >= K.minutes * 60) return endDay();
+  const sinceRest = r.done - (r.lastRest || 0);
+  if (K.rest && sinceRest >= K.rest * 60) { r.lastRest = r.done; saveData(); return rest(runNext); }
+  runNext();
+}
+
+function endDay() {
+  const r = dayRec();
+  const first = !r.met;
+  r.met = true; saveData();
+  const st = streakDays();
+  sheet(`<h3>今天練完了</h3>
+    <div class="stars">★★★</div>
+    <p>${Math.floor(r.done / 60)} 分鐘・${r.rounds} 輪${first && st > 1 ? `<br>連續第 <b>${st}</b> 天` : ''}</p>`,
+    [['回首頁', () => { close_(); show('home'); }],
+     ['再練一輪', () => { close_(); startDay(); }, 'link']]);
+}
+
+/* ---------- 20-20-20 ---------- */
+function rest(after) {
   let left = 20;
-  const box = sheet(`<h3>休息一下</h3><div class="big" id="restN">20</div>
-    <p>放下手機，看窗外或最遠的東西 20 秒，讓眼睛的對焦肌肉鬆開。</p>`, []);
-  const n = box.querySelector('#restN');
+  const box = sheet(`<h3>休息一下</h3><div class="restnum" id="rn">20</div>
+    <p>放下手機，看窗外或房間裡最遠的東西 20 秒，讓眼睛的對焦肌肉鬆開。</p>`, []);
+  const n = box.querySelector('#rn');
   const iv = setInterval(() => {
     n.textContent = --left;
-    if (left <= 0) { clearInterval(iv); close_(); }
+    if (left <= 0) { clearInterval(iv); close_(); after && after(); }
   }, 1000);
 }
 
@@ -1354,135 +1741,271 @@ let sheetEl = null;
 function sheet(html, buttons, onClose) {
   close_();
   sheetEl = el('div', 'sheet');
-  const box = el('div', 'box');
-  box.innerHTML = html;
+  const box = el('div', 'box'); box.innerHTML = html;
   (buttons || []).forEach(([label, fn, kind]) => {
     const b = el('button', kind === 'link' ? 'link' : 'primary');
     b.textContent = label; b.onclick = fn; box.append(b);
   });
-  sheetEl.append(box);
-  sheetEl._onClose = onClose;
+  sheetEl.append(box); sheetEl._cb = onClose;
   document.body.append(sheetEl);
   return box;
 }
-function close_() {
-  if (!sheetEl) return;
-  const cb = sheetEl._onClose;
-  sheetEl.remove(); sheetEl = null;
-  cb?.();
+function close_() { if (!sheetEl) return; const cb = sheetEl._cb; sheetEl.remove(); sheetEl = null; cb?.(); }
+
+/* =======================================================================
+   進度與回診報告
+   ======================================================================= */
+function renderReport() {
+  const sl = stableLevel();
+  if (sl) {
+    const m = LEVELS[sl - 1];
+    $('#stableV').innerHTML = m + '<small> mm</small>';
+    $('#stableN').innerHTML = `在 30 公分處約等於視力 <b>${acuity(m).toFixed(2)}</b>。
+      這是 app 量到的，不是視力檢查——<b>看趨勢就好，不要當視力值</b>。`;
+  } else {
+    $('#stableV').textContent = '—';
+    $('#stableN').textContent = '還要再練幾輪才夠判斷。同一個大小做滿 10 題、正確率站上八成才算數。';
+  }
+  const days = Object.keys(D.days).sort();
+  const totalSec = days.reduce((a, d) => a + D.days[d].sec, 0);
+  const weekSec = days.filter(d => d >= dayAgo(6)).reduce((a, d) => a + D.days[d].sec, 0);
+  $('#stStreak').textContent = streakDays();
+  $('#stWeek').innerHTML = Math.round(weekSec / 60) + '<small> 分</small>';
+  $('#stTotal').innerHTML = Math.round(totalSec / 60) + '<small> 分</small>';
+
+  /* 趨勢：越上面代表視標越細 */
+  const pts = [];
+  for (let i = 29; i >= 0; i--) {
+    const d = dayAgo(i), r = D.days[d];
+    if (r && r.lv) pts.push({ i: 29 - i, mm: LEVELS[r.lv - 1] });
+  }
+  const T = $('#trend');
+  if (pts.length < 2) {
+    T.innerHTML = `<p class="empty" style="padding:6px 0">練過兩天以上才畫得出趨勢。</p>`;
+  } else {
+    const W = 320, H = 110, PL = 30, PR = 8, PT = 10, PB = 18;
+    const xs = i => PL + (i / 29) * (W - PL - PR);
+    const lo = 2.5, hi = 14;                       // y 軸反過來：越上面越細
+    const ys = m => PT + ((m - lo) / (hi - lo)) * (H - PT - PB);
+    const dpath = pts.map((p, i) => (i ? 'L' : 'M') + xs(p.i).toFixed(1) + ' ' + ys(p.mm).toFixed(1)).join('');
+    const ticks = [14, 7, 2.5].map(m =>
+      `<line class="tr-grid" x1="${PL}" y1="${ys(m)}" x2="${W - PR}" y2="${ys(m)}"/>
+       <text class="tr-lbl" x="2" y="${ys(m) + 3}">${m}</text>`).join('');
+    T.innerHTML = `<svg viewBox="0 0 ${W} ${H}">${ticks}
+      <path class="tr-line" d="${dpath}"/>
+      ${pts.map(p => `<circle class="tr-dot" cx="${xs(p.i).toFixed(1)}" cy="${ys(p.mm).toFixed(1)}" r="2.6"/>`).join('')}
+      <text class="tr-lbl" x="${PL}" y="${H - 4}">30 天前</text>
+      <text class="tr-lbl" x="${W - PR}" y="${H - 4}" text-anchor="end">今天</text></svg>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:6px">越往上代表視標越細（mm）</div>`;
+  }
+
+  /* 各關正確率 */
+  const B = $('#bars'); B.replaceChildren();
+  let any = false;
+  GORDER.forEach(id => {
+    const a = D.g[id] || []; if (a.length < 5) return;
+    any = true;
+    const acc = a.reduce((s, v) => s + v, 0) / a.length;
+    const d = el('div', 'gb');
+    d.innerHTML = `<div class="hd"><span class="nm">${GAMES[id].name}</span>
+      <span class="pcnt">${Math.round(acc * 100)}%　${a.length} 題</span></div>
+      <div class="meter"><i style="width:${Math.round(acc * 100)}%"></i></div>`;
+    B.append(d);
+  });
+  if (!any) B.innerHTML = `<p class="empty">每一關做滿 5 題之後會出現。</p>`;
+
+  /* 回診報告 */
+  const trained = days.filter(d => D.days[d].sec > 0);
+  const since = trained[0] || today();
+  const metDays = trained.filter(d => D.days[d].met).length;
+  const span = Math.max(1, Math.round((Date.parse(today()) - Date.parse(since)) / DAY) + 1);
+  const m = sl ? LEVELS[sl - 1] : null;
+  $('#rpt').innerHTML = `
+    <h4>${K.name}・練習紀錄</h4>
+    <div class="meta">${since} ～ ${today()}　（${span} 天）</div>
+    <table>
+      <tr><td>醫囑：遮眼</td><td>${K.patch === 'none' ? '未設定' : (K.patch === 'left' ? '左眼' : '右眼')}</td></tr>
+      <tr><td>醫囑：每日</td><td>${K.minutes} 分鐘</td></tr>
+      <tr><td>有練習的天數</td><td>${trained.length} / ${span}</td></tr>
+      <tr><td>達到每日時數的天數</td><td>${metDays} 天</td></tr>
+      <tr><td>累積時間</td><td>${Math.round(totalSec / 60)} 分鐘</td></tr>
+      <tr><td>目前穩定視標</td><td>${m ? m + ' mm' : '樣本不足'}</td></tr>
+      <tr><td>　換算（30 cm）</td><td>${m ? '約 ' + acuity(m).toFixed(2) : '—'}</td></tr>
+      <tr><td>對比設定</td><td>${({ high: '高', mid: '中', low: '低' })[K.contrast]}</td></tr>
+    </table>
+    <div class="foot">視標大小由 app 依正確率與反應時間自動調整，「穩定視標」指同一個大小做滿 10 題
+    且正確率達 80% 的最細一級。<b>這不是視力檢查，數值僅供觀察趨勢</b>，
+    請以院所的正式檢查為準。</div>`;
 }
 
 /* =======================================================================
-   介面
+   設定
    ======================================================================= */
-function buildMenu() {
-  const wrap = $('#cards');
-  wrap.replaceChildren();
-  Object.entries(GAMES).forEach(([id, g]) => {
-    const b = el('button', 'card');
-    b.innerHTML = `<div class="thumb">${g.thumb()}</div>
-      <div><div class="t">${g.name}</div><div class="d">${g.desc}</div><span class="tag">${g.tag}</span></div>`;
-    b.onclick = () => startGame(id);
-    wrap.append(b);
-  });
-}
-
 function seg(host, opts, get, set) {
-  const h = $(host);
-  h.replaceChildren();
-  opts.forEach(([val, label]) => {
-    const b = el('button');
-    b.textContent = label;
-    b.setAttribute('aria-pressed', String(get() === val));
-    b.onclick = () => { set(val); syncSettings(); save('mlgf.settings', S); };
+  const h = $(host); h.replaceChildren();
+  opts.forEach(([v, lab]) => {
+    const b = el('button'); b.textContent = lab;
+    b.setAttribute('aria-pressed', String(get() === v));
+    b.onclick = () => { set(v); saveKid(); save('eg.pref', P); renderSettings(); };
     h.append(b);
   });
 }
+function renderSettings() {
+  seg('#segPatch', [['none', '不遮'], ['left', '遮左眼'], ['right', '遮右眼']], () => K.patch, v => K.patch = v);
+  seg('#segMinutes', [[5, '5 分'], [10, '10 分'], [15, '15 分'], [20, '20 分'], [30, '30 分']], () => K.minutes, v => K.minutes = v);
+  seg('#segRest', [[5, '5 分'], [10, '10 分'], [15, '15 分'], [0, '不提醒']], () => K.rest, v => K.rest = v);
+  seg('#segAuto', [[true, '自動調整'], [false, '我自己設']], () => K.auto, v => K.auto = v);
+  seg('#segLevel', LEVELS.map((m, i) => [i + 1, String(i + 1)]), () => K.level, v => K.level = v);
+  seg('#segContrast', [['high', '高'], ['mid', '中'], ['low', '低']], () => K.contrast, v => K.contrast = v);
+  seg('#segNight', [[false, '一般'], [true, '夜間']], () => P.night, v => P.night = v);
+  seg('#segColor', [[true, '彩色'], [false, '單色（更難）']], () => P.color, v => P.color = v);
+  seg('#segBg', [[true, '花樣背景'], [false, '素面背景']], () => P.bg, v => P.bg = v);
+  seg('#segSound', [[true, '音效開'], [false, '靜音']], () => P.sound, v => { P.sound = v; if (v) sfx.good?.(2); });
+  seg('#segHaptic', [[true, '開'], [false, '關']], () => P.haptic, v => { P.haptic = v; if (v) haptic(20); });
 
-function syncSettings() {
-  seg('#segLevel', LEVELS.map((m, i) => [i + 1, String(i + 1)]), () => S.level, v => S.level = v);
-  seg('#segContrast', [['high', '高'], ['mid', '中'], ['low', '低']], () => S.contrast, v => S.contrast = v);
-  seg('#segPatch', [['none', '不遮'], ['left', '遮左眼'], ['right', '遮右眼']], () => S.patch, v => S.patch = v);
-  seg('#segMinutes', [[5, '5 分'], [10, '10 分'], [15, '15 分'], [20, '20 分']], () => S.minutes, v => S.minutes = v);
-  seg('#segNight', [[false, '一般'], [true, '夜間']], () => S.night, v => S.night = v);
-  seg('#segColor', [[true, '彩色'], [false, '單色（更難）']], () => S.color, v => S.color = v);
-  seg('#segBg', [[true, '花樣背景'], [false, '素面背景']], () => S.bg, v => S.bg = v);
-  seg('#segSound', [[true, '音效開'], [false, '靜音']], () => S.sound, v => { S.sound = v; if (v) sfx.good(); });
+  const s = levelStat(K.level);
+  $('#lvSub').innerHTML = K.auto
+    ? `答得又快又準就自動縮小，太吃力就退回來。目前這一級${s ? `已做 <b>${s.n}</b> 題、正確率 <b>${Math.round(s.acc * 100)}%</b>` : '還沒有資料'}。`
+    : '你自己決定。數字越大視標越小。';
+  $('#segLevel').parentElement.style.opacity = K.auto ? .45 : 1;
+  $('#segLevel').parentElement.style.pointerEvents = K.auto ? 'none' : '';
 
-  const m = sizeMm();
+  const m = LEVELS[K.level - 1];
   $('#levelOut').textContent = `視標 ${m} mm ・ 30 公分處約等於視力 ${acuity(m).toFixed(2)}`;
-  $('#patchChip').hidden = S.patch === 'none';
-  $('#patchTxt').textContent = S.patch === 'left' ? '遮左眼' : '遮右眼';
 
-  const w = S.calPx > 0 ? S.calPx : Math.round(CARD_MM * CSS_PX_PER_MM);
+  const w = K.calPx > 0 ? K.calPx : Math.round(CARD_MM * CSS_PX_PER_MM);
   $('#calRange').value = w;
   $('#calBox').style.width = w + 'px';
-  $('#calOut').textContent = `1 毫米 = ${(w / CARD_MM).toFixed(2)} px${S.calPx > 0 ? '（已校準）' : '（預設值）'}`;
-  applyField();
-  buildMenu();
+  $('#calOut').textContent = `1 公釐 = ${(w / CARD_MM).toFixed(2)} px${K.calPx > 0 ? '（已校準）' : '（預設值）'}`;
+  $('#kidName').value = K.name;
+
+  const ks = $('#segKids'); ks.replaceChildren();
+  KIDS.forEach(k => {
+    const b = el('button'); b.textContent = k.name;
+    b.setAttribute('aria-pressed', String(k.id === K.id));
+    b.onclick = () => { useKid(k.id); renderSettings(); };
+    ks.append(b);
+  });
+  $('#delKid').disabled = KIDS.length < 2;
+  $('#delKid').style.opacity = KIDS.length < 2 ? .4 : 1;
 }
 
 $('#calRange').addEventListener('input', e => {
-  S.calPx = +e.target.value;
-  save('mlgf.settings', S);
-  syncSettings();
+  K.calPx = +e.target.value; saveKid();
+  $('#calBox').style.width = K.calPx + 'px';
+  $('#calOut').textContent = `1 公釐 = ${(K.calPx / CARD_MM).toFixed(2)} px（已校準）`;
 });
+$('#kidName').addEventListener('input', e => {
+  K.name = e.target.value.trim() || '寶貝'; saveKid();
+});
+$('#addKid').onclick = () => {
+  const k = newKid(''); KIDS.push(k); save('eg.kids', KIDS); useKid(k.id);
+  renderSettings(); $('#kidName').focus(); $('#kidName').select();
+};
+$('#delKid').onclick = () => {
+  if (KIDS.length < 2) return;
+  sheet(`<h3>刪除「${K.name}」？</h3><p>這位孩子的醫囑、難度與全部練習紀錄都會消失，沒辦法復原。</p>`,
+    [['確定刪除', () => {
+      try { localStorage.removeItem('eg.d.' + K.id); } catch {}
+      KIDS = KIDS.filter(x => x.id !== K.id); save('eg.kids', KIDS);
+      useKid(KIDS[0].id); close_(); renderSettings();
+    }], ['取消', () => close_(), 'link']]);
+};
+$('#who').onclick = () => {
+  sheet(`<h3>切換孩子</h3><p>每個孩子的醫囑、難度與紀錄都分開。</p>`,
+    KIDS.map(k => [k.name + (k.id === K.id ? '（目前）' : ''),
+      () => { useKid(k.id); close_(); show('home'); }, k.id === K.id ? 'link' : '']) 
+      .concat([['去設定新增', () => { close_(); show('settings'); }, 'link']]));
+};
 
-const GNAME = { same: '找一樣的', gap: '小缺口', maze: '走迷宮', pile: '三個一組', schulte: '數字接龍' };
-function buildLog() {
-  const todayS = LOG.filter(r => r.d === today()).reduce((a, r) => a + r.sec, 0);
-  const cut = Date.now() - 7 * 864e5;
-  const weekS = LOG.filter(r => r.t >= cut).reduce((a, r) => a + r.sec, 0);
-  $('#totToday').innerHTML = Math.round(todayS / 60) + '<small> 分</small>';
-  $('#totWeek').innerHTML = Math.round(weekS / 60) + '<small> 分</small>';
-  $('#totN').textContent = LOG.length;
-
-  const host = $('#logTable');
-  if (!LOG.length) {
-    host.innerHTML = `<p class="empty">還沒有紀錄。玩完一輪就會自動記下遊戲、精細度、答對率和用時。</p>`;
-    return;
+/* =======================================================================
+   第一次設定
+   ======================================================================= */
+let obStep = 0, obKid = null;
+function onboard() {
+  obKid = obKid || newKid('');
+  show('onboard');
+  [...$('#obSteps').children].forEach((i, n) => i.classList.toggle('on', n <= obStep));
+  const B = $('#obBody');
+  if (obStep === 0) {
+    B.innerHTML = `<h1>先認識一下</h1>
+      <p class="lede">這個 app 給戴著矯正眼鏡、需要做近距離精細目力練習的孩子用。
+      所有資料只存在這台裝置，沒有帳號也不會上傳。</p>
+      <div class="set"><div class="lab">孩子的名字</div>
+        <input type="text" id="obName" maxlength="12" placeholder="怎麼稱呼她／他"></div>
+      <button class="primary" style="margin-top:18px" id="obNext">下一步</button>`;
+    $('#obName').value = obKid.name === '寶貝' ? '' : obKid.name;
+    $('#obNext').onclick = () => {
+      obKid.name = $('#obName').value.trim() || '寶貝'; obStep = 1; onboard();
+    };
+    setTimeout(() => $('#obName').focus(), 120);
+  } else if (obStep === 1) {
+    B.innerHTML = `<h1>醫師怎麼交代？</h1>
+      <p class="lede">這兩項決定訓練效果，請照眼科醫師的指示填。<b>沒有交代就留「不遮」</b>——
+      自己加遮眼可能壓抑到好的那隻眼。</p>
+      <div class="set"><div class="lab">遮哪隻眼</div><div class="seg" id="obPatch"></div></div>
+      <div class="set"><div class="lab">每天練幾分鐘</div><div class="seg" id="obMin"></div></div>
+      <button class="primary" style="margin-top:18px" id="obNext">下一步</button>
+      <button class="link" id="obBack">上一步</button>`;
+    const sg = (host, opts, get, set) => {
+      const h = $(host); h.replaceChildren();
+      opts.forEach(([v, l]) => { const b = el('button'); b.textContent = l;
+        b.setAttribute('aria-pressed', String(get() === v));
+        b.onclick = () => { set(v); onboard(); }; h.append(b); });
+    };
+    sg('#obPatch', [['none', '不遮'], ['left', '遮左眼'], ['right', '遮右眼']], () => obKid.patch, v => obKid.patch = v);
+    sg('#obMin', [[5, '5 分'], [10, '10 分'], [15, '15 分'], [20, '20 分']], () => obKid.minutes, v => obKid.minutes = v);
+    $('#obNext').onclick = () => { obStep = 2; onboard(); };
+    $('#obBack').onclick = () => { obStep = 0; onboard(); };
+  } else {
+    B.innerHTML = `<h1>最後兩件事</h1>
+      <p class="lede">校準之後，app 顯示的毫米數才對得上真實大小。可以先跳過，之後在設定裡做。</p>
+      <div class="set"><div class="lab">拿一張卡片對齊</div>
+        <div class="sub">健保卡、悠遊卡、信用卡都是同一個尺寸。貼著螢幕，拖到虛線框跟卡片一樣寬。</div>
+        <div class="calbox"><div class="cardline" id="obCal"></div>
+          <input type="range" id="obRange" min="180" max="420" step="1">
+          <div class="readout" id="obOut"></div></div></div>
+      <div class="set" style="border-bottom:0"><div class="lab">要知道的事</div>
+        <div class="sub"><b>這不是醫療器材，也不能治療疾病。</b>它把練習時間記下來、自動調整難度，
+        不能取代回診與醫師的處方。練習時<b>一定要戴著矯正眼鏡</b>，手機拿在 30 公分左右。</div></div>
+      <button class="primary" style="margin-top:18px" id="obDone">知道了，開始用</button>
+      <button class="link" id="obBack">上一步</button>`;
+    const w0 = obKid.calPx > 0 ? obKid.calPx : Math.round(CARD_MM * CSS_PX_PER_MM);
+    $('#obRange').value = w0; $('#obCal').style.width = w0 + 'px';
+    $('#obOut').textContent = `1 公釐 = ${(w0 / CARD_MM).toFixed(2)} px`;
+    $('#obRange').addEventListener('input', e => {
+      obKid.calPx = +e.target.value;
+      $('#obCal').style.width = obKid.calPx + 'px';
+      $('#obOut').textContent = `1 公釐 = ${(obKid.calPx / CARD_MM).toFixed(2)} px（已校準）`;
+    });
+    $('#obDone').onclick = () => {
+      KIDS.push(obKid); save('eg.kids', KIDS); useKid(obKid.id);
+      obKid = null; obStep = 0; show('home');
+    };
+    $('#obBack').onclick = () => { obStep = 1; onboard(); };
   }
-  const rows = LOG.slice(0, 24).map(r => {
-    const t = new Date(r.t);
-    const acc = Math.round(r.ok / Math.max(1, r.ok + r.bad) * 100);
-    return `<tr><td>${String(t.getMonth() + 1)}/${t.getDate()}<br><span style="color:var(--muted);font-size:11px">${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}</span></td>
-      <td>${GNAME[r.g] || r.g}<br><span style="color:var(--muted);font-size:11px">精細度 ${r.lv}・${{ high: '高對比', mid: '中對比', low: '低對比' }[r.ct] || ''}</span></td>
-      <td class="num">${acc}%</td><td class="num">${r.sec}s</td></tr>`;
-  }).join('');
-  host.innerHTML = `<table><thead><tr><th>時間</th><th>項目</th><th style="text-align:right">答對率</th><th style="text-align:right">用時</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
+/* =======================================================================
+   啟動
+   ======================================================================= */
 $('#back').onclick = () => {
   GAMES[round?.id]?.cleanup?.();
-  clearInterval(tick);
-  close_();
-  show('menu');
+  clearInterval(tick); close_();
+  show(view === 'play' ? (SESS && SESS.free ? 'free' : 'home') : 'home');
 };
-document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => {
-  if (b.dataset.go === 'log') buildLog();
-  show(b.dataset.go);
-});
+$('#goBtn').onclick = () => startDay();
+document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => show(b.dataset.go));
+document.addEventListener('gesturestart', e => e.preventDefault());
 
-/* ---------- 啟動 ---------- */
-function boot(data) {
-  if (data && data.settings) Object.assign(S, data.settings);
-  $('#clock').textContent = Math.floor(sessionSec.s / 60);
-  buildMasks();
-  syncSettings();
-  show('menu');
-}
-if (window.claude?.hot?.ready) window.claude.hot.ready(boot);
-else boot(window.claude?.hot?.data ?? {});
-window.claude?.hot?.snapshot?.(() => ({ settings: S }));
+buildMasks();
+if (!KIDS.length) { onboard(); }
+else { useKid(CURID || KIDS[0].id); show('home'); }
 
-/* 離線用：第一次連著網路打開時，Service Worker 會把整個 app（含 129 張圖和字體）
-   抓進快取，之後沒網路也能從主畫面開起來玩。
-   註冊失敗不影響遊戲——例如用 file:// 開，或在不支援的環境裡。 */
+/* 離線：第一次連著網路開啟時把整個 app 抓進快取 */
 const secure = location.protocol === 'https:' || ['localhost', '127.0.0.1'].includes(location.hostname);
 if ('serviceWorker' in navigator && secure) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-  });
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
 </script>
 </body>

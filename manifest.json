@@ -1,14 +1,15 @@
 {
   "name": "目力練功房",
   "short_name": "目力練功房",
-  "description": "給遠視／弱視孩子的近距離精細目力訓練小遊戲",
+  "description": "給戴矯正眼鏡的孩子的每日近距離精細目力練習：自動找到適合的視標大小，並產生回診時可以給醫師看的紀錄",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#EFF4F2",
-  "theme_color": "#1C8C76",
+  "background_color": "#F2F6F4",
+  "theme_color": "#0E2B33",
   "lang": "zh-Hant-TW",
+  "categories": ["education", "health"],
   "icons": [
     { "src": "img/eyes.png", "sizes": "128x128", "type": "image/png", "purpose": "any" }
   ]

@@ -143,7 +143,6 @@ PR 的必要核准數設成 0——GitHub 不讓作者核准自己的 PR，設�
 
 | 檔案 | 誰用 | 做什麼 |
 |---|---|---|
-| `安裝到新電腦.command` | 她 | **單獨傳給她的那一個檔案。**不需要先有 repo：check git → clone public repo 到桌面 → 開資料夾與說明 |
 | `設定這台電腦.command` | 她 | 新電腦第一次：檢查 git／python／gh、帶著登入、設 noreply 署名、裝 QR 工具 |
 | `開發.command` | 兩人 | 先 `git pull --ff-only`，再起本機網站（綁區網）並印出 QR code |
 | `送出給 Jessie 檢查.command` | 她 | build-sw → 開 `edit-<時間>` 分支 → rebase → push → 開 PR |
@@ -152,6 +151,21 @@ PR 的必要核准數設成 0——GitHub 不讓作者核准自己的 PR，設�
 | `還原.command` | 兩人 | 丟掉未送出的修改並回到 `origin/main` |
 
 腳本全部用 `cd "$(dirname "$0")"`，沒有寫死路徑，clone 到任何位置都能跑。
+
+### 新電腦怎麼開始
+
+不用傳任何檔案給她——**所有 `.command` 都住在 repo 裡，她還沒 clone 就一顆按鈕都沒有**。
+所以 bootstrap 交給她 Mac 上的 Claude Code：請它 clone 到桌面，然後點 `設定這台電腦.command`。
+
+曾經寫過一個單獨 AirDrop 給她的 `安裝到新電腦.command`，已經刪掉，因為它反而是唯一會
+踩到 Gatekeeper 的東西：
+
+> **`git clone` 下來的檔案不帶 `com.apple.quarantine`**（已實測 `xattr` 為空），
+> 所以 clone 下來的 `.command` 點兩下直接開。隔離標記是下載的那個 app 加上去的
+> （瀏覽器、AirDrop、郵件），git 不會加。
+
+換句話說，用 AirDrop 傳安裝檔是**自己製造**出一道「無法打開，因為來自未識別的開發者」，
+而讓 Claude Code 去 clone 則完全繞過這件事。
 
 ### 手機預覽
 

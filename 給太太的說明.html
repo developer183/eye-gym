@@ -20,6 +20,13 @@ p{margin:10px 0}
 ul,ol{margin:10px 0;padding-left:22px}
 li{margin:6px 0}
 b{font-weight:600}
+pre{background:#EDE8E0;border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;margin:12px 0 10px;font-size:15px;line-height:1.85;
+  white-space:pre-wrap;word-break:break-word;font-family:inherit}
+.copy{appearance:none;border:0;background:var(--ink);color:#fff;font:inherit;font-size:14.5px;
+  padding:9px 18px;border-radius:999px;cursor:pointer}
+.copy:active{transform:translateY(1px)}
+.copied{margin-left:10px;font-size:14.5px;color:var(--go)}
 code{background:#EDE8E0;padding:2px 6px;border-radius:5px;font-size:14.5px;
   font-family:ui-monospace,Menlo,monospace}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
@@ -92,10 +99,17 @@ td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospace;font-
 因為那需要正式網址才有的安全連線。文字、顏色、關卡內容都看得到；
 要測離線就等上線之後在正式網址上測。</div>
 
-<div class="note">
-第一次點這些檔案，Mac 可能會說「無法打開，因為來自未識別的開發者」。
-在那個視窗按「取消」，然後到<b>系統設定 → 隱私權與安全性</b>，往下找到那一行，按「仍要打開」。只要做一次。
-</div>
+<h2>第一次：怎麼拿到這個資料夾</h2>
+<p>你的 Mac 上會有一個叫 <b>Claude Code</b> 的 app。打開它，把下面這段話貼進去送出，
+它會把資料夾下載到你的桌面：</p>
+<pre>幫我把 https://github.com/graylightai/eye-gym 這個專案
+下載到我的桌面，資料夾名稱叫「目力練功房」。
+下載完打開那個資料夾，並用瀏覽器打開裡面的「給太太的說明.html」。</pre>
+<p><button class="copy" id="cp">複製上面這段話</button><span class="copied" id="cpOk"></span></p>
+<p>下載好之後，點兩下裡面的「<b>設定這台電腦</b>」，照著畫面做完。只要做一次。</p>
+<div class="note">這樣下載下來的檔案<b>點兩下就能直接開</b>，不會跳出「來自未識別的開發者」。
+那個警告只有在別人用 AirDrop 或訊息傳 <code>.command</code> 給你的時候才會出現——
+我們不用那種方式，所以你不會遇到。</div>
 
 <h2>第一個月：一次只學一件事</h2>
 <p>不要想一步到位。下面四步，每一步都是真的在貢獻，而且每一步會讓下一步變簡單。</p>
@@ -242,4 +256,18 @@ td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospace;font-
 <p>那是後面的事，而且不影響你現在做的任何事情——<b>現在改的東西，到時候原封不動會變成 app 裡面的內容。</b>
 你不用為了上架改變做法。</p>
 
-</div></body></html>
+</div>
+<script>
+document.getElementById('cp').onclick = async function () {
+  var t = document.querySelector('pre').textContent.trim();
+  var ok = document.getElementById('cpOk');
+  try { await navigator.clipboard.writeText(t); ok.textContent = '✓ 複製好了，貼到 Claude Code 裡'; }
+  catch (e) {
+    // file:// 下有些瀏覽器不給用剪貼簿，那就幫她把字選起來，按 ⌘C 就好
+    var r = document.createRange(); r.selectNode(document.querySelector('pre'));
+    getSelection().removeAllRanges(); getSelection().addRange(r);
+    ok.textContent = '已經幫你選起來了，按 ⌘C 複製';
+  }
+};
+</script>
+</body></html>

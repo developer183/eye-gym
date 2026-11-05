@@ -1,0 +1,159 @@
+/* 版面與元件：首頁、報告、設定、對話框。 */
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+img{max-width:100%}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--fg);font-family:var(--body);
+  -webkit-text-size-adjust:100%;overscroll-behavior:none;
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;
+  -webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--go);outline-offset:2px;border-radius:10px}
+
+#app{min-height:100%;display:flex;flex-direction:column}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:8px;
+  padding:10px 16px;max-width:460px;width:100%;margin:0 auto;
+  background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(12px)}
+.bar.line{border-bottom:1px solid var(--line)}
+.who{display:flex;align-items:center;gap:6px;padding:5px 11px 5px 7px;border-radius:999px;
+  background:var(--surface);border:1px solid var(--line);font-size:13.5px;font-weight:500;max-width:52vw}
+.who .av{width:22px;height:22px;border-radius:50%;background:var(--go);color:#fff;
+  display:grid;place-items:center;font-size:11.5px;font-weight:700;flex:none}
+.who .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.who .cv{color:var(--muted);font-size:10px}
+.spacer{flex:1}
+.stk{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;
+  background:var(--amber-soft);color:var(--amber);font-size:12.5px;font-weight:700;
+  font-variant-numeric:tabular-nums}
+.iconbtn{width:36px;height:36px;display:grid;place-items:center;border-radius:11px;
+  font-size:19px;color:var(--muted)}
+.iconbtn:active{background:var(--sunken)}
+
+.page{flex:1;display:none;flex-direction:column;padding:0 16px;max-width:460px;width:100%;margin:0 auto}
+.page.on{display:flex;animation:pagein .26s cubic-bezier(.22,.9,.3,1)}
+@keyframes pagein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pad{padding-block:4px 30px}
+h1{font-family:var(--display);font-weight:600;font-size:25px;line-height:1.3;margin:0 0 6px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:12px;margin:26px 0 10px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted)}
+p.lede{margin:0 0 16px;color:var(--muted);font-size:13.5px;line-height:1.75;max-width:44ch}
+
+/* ---- 今日：主角 ---- */
+.today{background:var(--ink);color:var(--onink);border-radius:24px;padding:22px 20px 20px;
+  box-shadow:var(--lift);position:relative;overflow:hidden}
+.today::after{content:'';position:absolute;right:-70px;top:-70px;width:200px;height:200px;
+  border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--go) 26%,transparent),transparent 68%)}
+.today .lbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--onink-dim);
+  font-weight:600;position:relative}
+.ringwrap{display:flex;align-items:center;gap:18px;margin:14px 0 16px;position:relative}
+.ring{flex:none;width:96px;height:96px}
+.ring .trk{fill:none;stroke:rgba(255,255,255,.14);stroke-width:9}
+.ring .val{fill:none;stroke:var(--go);stroke-width:9;stroke-linecap:round;
+  transition:stroke-dashoffset .6s cubic-bezier(.3,.9,.3,1)}
+.ring .big{font-family:var(--display);font-weight:600;font-size:25px;fill:var(--onink);
+  text-anchor:middle;font-variant-numeric:tabular-nums}
+.ring .sub{font-size:10px;fill:var(--onink-dim);text-anchor:middle}
+.facts{display:flex;flex-direction:column;gap:9px;min-width:0}
+.fact{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--onink-dim)}
+.fact b{color:var(--onink);font-weight:600;font-variant-numeric:tabular-nums}
+.fact .dot{width:7px;height:7px;border-radius:50%;background:var(--warn);flex:none}
+.go{width:100%;padding:16px;border-radius:16px;background:var(--go);color:#04221C;
+  font-family:var(--display);font-weight:600;font-size:16.5px;position:relative;
+  transition:transform .12s ease}
+.go:active{transform:scale(.98)}
+.go.done{background:rgba(255,255,255,.14);color:var(--onink)}
+
+/* ---- 本週 ---- */
+.week{display:flex;gap:6px;margin-top:14px}
+.week .d{flex:1;text-align:center}
+.week .d i{display:block;height:34px;border-radius:9px;background:var(--sunken);
+  margin-bottom:5px;position:relative;overflow:hidden}
+.week .d i b{position:absolute;left:0;right:0;bottom:0;background:var(--go);display:block}
+.week .d.now i{box-shadow:inset 0 0 0 2px var(--go)}
+.week .d span{font-size:10.5px;color:var(--muted);font-family:var(--mono)}
+
+/* ---- 列表卡 ---- */
+.rows{display:grid;gap:9px}
+.row{display:flex;align-items:center;gap:13px;padding:14px;border-radius:15px;background:var(--surface);
+  border:1px solid var(--line);box-shadow:var(--shadow);text-align:left;width:100%;
+  transition:transform .12s ease}
+.row:active{transform:scale(.985)}
+.row .ic{flex:none;width:42px;height:42px;border-radius:12px;background:var(--sunken);
+  display:grid;place-items:center;--fgt:var(--fg);--bgf:var(--sunken)}
+.row .t{font-family:var(--display);font-weight:600;font-size:15px}
+.row .d{font-size:12px;color:var(--muted);line-height:1.5;margin-top:1px}
+.row .go2{color:var(--muted);font-size:17px;flex:none}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
+.ghost{padding:13px;border-radius:14px;border:1px solid var(--line);font-size:13.5px;
+  display:flex;align-items:center;justify-content:center;gap:7px;background:transparent}
+.ghost:active{background:var(--surface)}
+
+/* ---- 報告 ---- */
+.hero{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px;
+  box-shadow:var(--shadow);text-align:center}
+.hero .k{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.hero .v{font-family:var(--display);font-weight:600;font-size:44px;line-height:1.1;margin:4px 0 2px;
+  font-variant-numeric:tabular-nums}
+.hero .v small{font-size:17px;color:var(--muted);font-weight:400}
+.hero .n{font-size:12.5px;color:var(--muted);line-height:1.6}
+.stats{display:flex;gap:9px;margin-top:9px}
+.stat{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:11px}
+.stat .k{font-size:10.5px;color:var(--muted);letter-spacing:.04em}
+.stat .v{font-family:var(--display);font-size:21px;font-weight:600;font-variant-numeric:tabular-nums}
+.stat .v small{font-size:11px;color:var(--muted);font-weight:400}
+.trend{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 12px 10px;
+  margin-top:9px}
+.trend svg{width:100%;height:auto;display:block}
+.tr-line{fill:none;stroke:var(--go);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.tr-dot{fill:var(--go)}
+.tr-grid{stroke:var(--line);stroke-width:1}
+.tr-lbl{font-size:9px;fill:var(--muted);font-family:'IBM Plex Mono',monospace}
+.bars{display:grid;gap:11px;margin-top:4px}
+.gb .hd{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.gb .nm{font-size:13.5px;font-weight:500;margin-right:auto}
+.gb .pcnt{font-family:var(--mono);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.meter{height:7px;border-radius:99px;background:var(--sunken);overflow:hidden}
+.meter i{display:block;height:100%;border-radius:99px;background:var(--go)}
+.empty{color:var(--muted);font-size:13px;line-height:1.85;padding:20px 0}
+
+/* ---- 設定 ---- */
+.set{padding:14px 0;border-bottom:1px solid var(--line)}
+.set:last-child{border-bottom:0}
+.set .lab{font-size:14px;font-weight:500;margin-bottom:3px}
+.set .sub{font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:10px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{padding:9px 14px;border-radius:11px;border:1px solid var(--line);font-size:13.5px;
+  background:var(--surface);transition:background .15s,border-color .15s}
+.seg button[aria-pressed="true"]{background:var(--go);border-color:var(--go);color:#04221C;font-weight:600}
+input[type=range]{width:100%;accent-color:var(--go)}
+input[type=text]{width:100%;padding:12px 13px;border-radius:12px;border:1px solid var(--line);
+  background:var(--surface);color:var(--fg);font:inherit;-webkit-user-select:text;user-select:text}
+.calbox{margin-top:10px;background:var(--sunken);border-radius:13px;padding:13px}
+.cardline{height:54px;border:2px dashed var(--go);border-radius:7px;margin:0 auto 10px}
+.readout{font-family:var(--mono);font-size:11.5px;color:var(--go);font-variant-numeric:tabular-nums;margin-top:9px}
+details.note{margin-top:22px;border-top:1px solid var(--line);padding-top:14px}
+details.note summary{font-size:13px;color:var(--muted);cursor:pointer;list-style:none}
+details.note summary::-webkit-details-marker{display:none}
+details.note summary::before{content:'▸ ';color:var(--go)}
+details.note[open] summary::before{content:'▾ '}
+details.note .body{font-size:12.5px;line-height:1.85;color:var(--muted);margin-top:10px;max-width:44ch}
+details.note .body b{color:var(--fg);font-weight:500}
+details.note .body ul{margin:8px 0;padding-left:18px}
+
+/* ---- 訓練中 ---- */
+#play{padding-block:8px 16px;gap:10px}
+.mins{display:flex;align-items:center;gap:9px}
+.mins .trk2{flex:1;height:6px;border-radius:99px;background:var(--sunken);overflow:hidden}
+.mins .trk2 i{display:block;height:100%;background:var(--go);border-radius:99px;
+  transition:width .5s cubic-bezier(.3,.9,.3,1)}
+.mins .n{font-family:var(--mono);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pbar{height:4px;border-radius:99px;background:var(--sunken);overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--go);border-radius:99px;transition:width .3s ease}
+.prompt{display:flex;align-items:center;gap:12px;min-height:44px}
+.prompt .txt{font-size:15px;font-weight:500;line-height:1.4}
+.prompt .txt em{font-style:normal;color:var(--go);font-weight:700}
+.prompt .ref{flex:none;display:grid;place-items:center;--fgt:var(--fg);--bgf:var(--paper)}
+/* min-height 用 min()：矮螢幕（iPhone SE）配上方向鍵或托盤時，
+   固定 320px 會把頁面頂出去，讓它可以縮才安全。 */
+#field{flex:1;min-height:min(320px, 44vh);border-radius:18px;display:grid;place-items:center;padding:12px;
+  background:var(--bgf);border:1px solid var(--line);overflow:hidden;touch-action:none}

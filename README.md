@@ -86,3 +86,61 @@ build-sw.py     改完東西跑這支重新產生 sw.js
 
 練習時**一定要戴著矯正眼鏡**，手機拿在 30 公分左右。
 每隔一段時間（設定裡可調）會跳出 20 秒看遠提醒。
+
+## 一起開發
+
+程式碼已經拆成一檔一責任，兩個人同時改不同檔案不會衝突。
+
+```
+index.html          畫面骨架
+css/tokens.css      顏色、字體、陰影 ← 想換配色只改這裡
+css/app.css         版面與元件
+css/games.css       五個關卡的樣式
+js/util.js          小工具
+js/content.js       文案、視標級距、難度門檻 ← 不碰程式邏輯也能調
+js/state.js         孩子資料與設定的讀寫
+js/engine.js        自適應難度與每日紀錄
+js/draw.js          繪圖：蘭氏環、小生物、迷宮、貼圖、花樣背景
+js/games.js         關卡登記表
+js/game-*.js        五個關卡，一關一個檔
+js/ui.js            畫面流程
+```
+
+`<script>` 依序載入，沒有打包步驟——改完存檔、瀏覽器重新整理就看得到。
+
+### 點兩下就能用的三個檔案
+
+| 檔案 | 做什麼 |
+|---|---|
+| `開發.command` | 起本機網站並打開瀏覽器 |
+| `上線.command` | 重新產生快取清單、commit、push |
+| `還原.command` | 把未上線的修改全部丟掉，回到上次上線的樣子 |
+
+`給太太的說明.html` 是寫給完全沒寫過程式的人的入門文件。
+
+### 新增一個關卡
+
+在 `js/game-你的名字.js` 寫：
+
+```js
+GAMES.yourid = {
+  name: '關卡名稱',
+  desc: '一句話說明',
+  rounds: 10,                       // 一輪幾題
+  thumb: () => '<svg…>',            // 選單上的小圖
+  render(field, api) {
+    // 把題目畫進 field
+    // 答對 api.pass()、答錯 api.miss()、要改題數 api.setTotal(n)
+  },
+  cleanup() {}                      // 選用：移除事件監聽
+};
+```
+
+然後在 `index.html` 加一行 `<script src="js/game-你的名字.js"></script>`，
+並把 id 加進 `js/ui.js` 的 `GORDER`。
+
+### 之後要上架 App Store
+
+用 Capacitor 把現有的靜態檔包成原生專案，程式不用重寫。
+要先補上原生能力（震動、每日提醒通知、分享回診報告），
+否則會卡在 Apple 準則 4.2「只是把網站包起來」。

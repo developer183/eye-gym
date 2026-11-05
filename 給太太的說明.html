@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>目力練功房 · 怎麼一起做</title>
+<style>
+:root{--paper:#F7F5F0;--ink:#241F1B;--muted:#6B635A;--line:#DDD5C9;--go:#148873;
+  --go-soft:#E2F1EC;--warn:#C6553F;--warn-soft:#FBEAE6;--card:#fff;
+  --cjk:'PingFang TC','Noto Sans TC',sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--cjk);
+  line-height:1.85;font-size:16.5px}
+.wrap{max-width:720px;margin:0 auto;padding:40px 22px 90px}
+h1{font-size:30px;line-height:1.35;margin:0 0 8px;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:15px;margin:0 0 36px}
+h2{font-size:21px;margin:48px 0 6px;padding-top:22px;border-top:2px solid var(--line)}
+h3{font-size:17px;margin:28px 0 6px}
+p{margin:10px 0}
+ul,ol{margin:10px 0;padding-left:22px}
+li{margin:6px 0}
+b{font-weight:600}
+code{background:#EDE8E0;padding:2px 6px;border-radius:5px;font-size:14.5px;
+  font-family:ui-monospace,Menlo,monospace}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:18px 20px;margin:16px 0}
+.btn{display:flex;gap:14px;align-items:flex-start;background:var(--card);
+  border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0}
+.btn .ic{font-size:26px;line-height:1.2;flex:none;width:38px;text-align:center}
+.btn .t{font-weight:600;margin-bottom:2px}
+.btn .d{color:var(--muted);font-size:15px}
+.step{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--go);
+  border-radius:0 14px 14px 0;padding:16px 20px;margin:14px 0}
+.step .w{font-size:13px;letter-spacing:.08em;color:var(--go);font-weight:700;margin-bottom:4px}
+.note{background:var(--go-soft);border-radius:12px;padding:14px 18px;margin:16px 0;font-size:15.5px}
+.stop{background:var(--warn-soft);border-radius:12px;padding:14px 18px;margin:16px 0;font-size:15.5px}
+.stop b{color:var(--warn)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:15.5px}
+th{text-align:left;font-size:13px;letter-spacing:.05em;color:var(--muted);
+  padding:0 8px 8px 0;border-bottom:1px solid var(--line);font-weight:600}
+td{padding:9px 8px 9px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospace;font-size:14px}
+.say{background:#2B2621;color:#F2EDE4;border-radius:12px;padding:14px 18px;margin:12px 0;
+  font-size:15.5px;line-height:1.75}
+.say .who{font-size:12.5px;color:#A89C8C;margin-bottom:6px;letter-spacing:.05em}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>目力練功房<br>你可以怎麼一起做</h1>
+<p class="sub">給第一次參與軟體專案、而且完全沒寫過程式的人</p>
+
+<div class="note">
+<b>先講結論：你不需要學會寫程式。</b><br>
+你的 Mac 上會裝一個叫 Claude Code 的東西，<b>打字交給它，判斷留給你</b>。
+你要練的是「說清楚想要什麼」和「看結果對不對」——這兩件事它做不到，只有你能做。
+</div>
+
+<h2>三顆按鈕，就是全部</h2>
+<p>打開 <code>目力練功房</code> 這個資料夾，裡面有三個可以點兩下的檔案。你只會用到這三個。</p>
+
+<div class="btn"><div class="ic">▶</div><div>
+  <div class="t">開發</div>
+  <div class="d">點兩下開始工作。它會自己打開瀏覽器，讓你看到目前的樣子。
+  改完檔案存檔後，回到瀏覽器按 <code>⌘R</code> 重新整理就看得到。</div></div></div>
+
+<div class="btn"><div class="ic">↑</div><div>
+  <div class="t">上線</div>
+  <div class="d">改好了、確認沒問題，點兩下送上去。它會問你「改了什麼」，
+  隨便寫一句就好（例如「把開始按鈕改大一點」）。大約一分鐘後網站就更新了。</div></div></div>
+
+<div class="btn"><div class="ic">↺</div><div>
+  <div class="t">還原</div>
+  <div class="d">改壞了、越改越亂、不想要了——點兩下，全部回到上次上線的樣子。
+  <b>這顆按鈕的存在就是為了讓你放膽亂改。</b></div></div></div>
+
+<div class="note">
+第一次點這些檔案，Mac 可能會說「無法打開，因為來自未識別的開發者」。
+在那個視窗按「取消」，然後到<b>系統設定 → 隱私權與安全性</b>，往下找到那一行，按「仍要打開」。只要做一次。
+</div>
+
+<h2>第一個月：一次只學一件事</h2>
+<p>不要想一步到位。下面四步，每一步都是真的在貢獻，而且每一步會讓下一步變簡單。</p>
+
+<div class="step"><div class="w">第 1 週</div>
+<h3>只是用它，然後記下問題</h3>
+<p>帶小孩每天用。你不碰任何檔案，但<b>這一週的價值可能是全部裡面最高的</b>——
+因為只有實際陪她用過的人，才知道哪裡不對勁。</p>
+<p>拿手機備忘錄記，想到就寫：</p>
+<ul>
+<li>她在哪一關卡住、露出不耐煩的表情</li>
+<li>哪個字看不懂、哪個按鈕找不到</li>
+<li>哪裡太簡單讓她覺得無聊</li>
+<li>什麼時候她想自己再玩一次</li>
+</ul>
+<p>不用寫得正式。「迷宮她每次都放棄」這樣就夠了。</p>
+</div>
+
+<div class="step"><div class="w">第 2 週</div>
+<h3>改文字和數字</h3>
+<p>打開 <code>js/content.js</code>（用「文字編輯」或 VS Code 都行）。
+這個檔案裡面<b>全部都是你可以改的東西</b>，而且每一行都有中文說明。</p>
+<p>可以改的像是：</p>
+<ul>
+<li>每一關在首頁顯示的名字和說明</li>
+<li>視標大小的六個級距</li>
+<li>自動調難度的門檻（幾題、要多準、要多快）</li>
+</ul>
+<p>流程永遠一樣：<b>點「開發」→ 改 → 存檔 → 瀏覽器按 ⌘R 看 → 滿意就點「上線」</b>。
+不滿意就點「還原」，什麼事都沒發生過。</p>
+</div>
+
+<div class="step"><div class="w">第 3–4 週</div>
+<h3>改顏色和字級</h3>
+<p>打開 <code>css/tokens.css</code>。整個 app 的顏色都在這一個檔案裡，
+改一個地方，所有畫面會一起變。</p>
+<p>每一個顏色都長這樣：<code>--go:#148873;</code>。<code>#148873</code> 就是顏色代碼。
+在 Google 搜「顏色選擇器」隨便找一個，挑到喜歡的顏色、複製它的代碼貼上去就好。</p>
+<div class="note">檔案裡有<b>兩組</b>顏色：一組是淺色模式，一組是深色模式（手機設定深色主題時會用到）。
+兩組都要改，不然其中一種模式會怪怪的。</div>
+</div>
+
+<div class="step"><div class="w">第 2 個月起</div>
+<h3>用 Claude Code 做新東西</h3>
+<p>到這裡你已經很熟那個「改 → 看 → 上線」的循環了。接下來把<b>想做的事說給 Claude Code 聽</b>，
+讓它寫，你負責看結果。這一節後面會講怎麼說。</p>
+</div>
+
+<h2>哪些檔案是你的</h2>
+<table>
+<tr><th>檔案</th><th>是什麼</th></tr>
+<tr><td>js/content.js</td><td><b>你的。</b>文字、視標級距、難度門檻。每一行都有中文說明</td></tr>
+<tr><td>css/tokens.css</td><td><b>你的。</b>全部的顏色、字體、圓角</td></tr>
+<tr><td>css/app.css</td><td>版面：首頁、報告、設定長什麼樣。可以改，但先問一聲</td></tr>
+<tr><td>js/game-*.js</td><td>五個關卡，一關一個檔案。<b>兩個人同時改不同關卡不會打架</b></td></tr>
+<tr><td>js/engine.js</td><td>自動調難度的邏輯。<b>先不要碰</b>，改壞了小孩練的東西就不對了</td></tr>
+<tr><td>js/state.js</td><td>資料怎麼存。<b>先不要碰</b></td></tr>
+<tr><td>js/ui.js</td><td>畫面怎麼運作。可以改，但先問一聲</td></tr>
+</table>
+
+<div class="stop">
+<b>唯一真正的禁區</b>：<code>js/engine.js</code> 和 <code>js/state.js</code>。
+前者決定視標大小怎麼自動調整，後者決定小孩的紀錄怎麼存。
+這兩個改壞了，<b>不會跳錯誤，但小孩練的東西會悄悄變成錯的</b>——那比畫面壞掉嚴重得多。
+</div>
+
+<h2>怎麼跟 Claude Code 說話</h2>
+<p>這是整件事最關鍵的技能。重點不是用什麼術語，是<b>說清楚你看到什麼、你想要什麼</b>。</p>
+
+<h3>講現象，不要講解法</h3>
+<div class="say"><div class="who">這樣說 ✓</div>
+「小孩玩迷宮的時候每次都放棄。我看她是手指擋住前面的路，看不到要往哪裡走。」</div>
+<div class="say"><div class="who">不要這樣說 ✗</div>
+「迷宮的 cellPx 改成 40。」</div>
+<p>你不知道正確的解法是什麼——那是它的工作。但<b>只有你看到她在皺眉頭</b>。
+把你看到的講出來，它會提出做法，你再判斷合不合理。</p>
+
+<h3>說清楚「改完之後應該變怎樣」</h3>
+<div class="say"><div class="who">這樣說 ✓</div>
+「首頁那顆開始按鈕我想要更明顯，小孩第一次用的時候找了一下。」</div>
+<div class="say"><div class="who">太模糊 ✗</div>
+「首頁醜醜的。」</div>
+
+<h3>永遠要求它先讓你看</h3>
+<p>加一句：<b>「改好之後告訴我要看哪裡」</b>。
+它會告訴你去首頁還是設定頁看，你自己確認過才點「上線」。</p>
+
+<h3>不確定就問</h3>
+<p>它不會嫌問題笨。可以直接問：</p>
+<ul>
+<li>「這個檔案在做什麼？」</li>
+<li>「我改這一行會影響到什麼？」</li>
+<li>「這樣改會不會動到小孩的紀錄？」</li>
+</ul>
+
+<h2>兩個人一起改的規矩</h2>
+<p>檔案已經拆開了，所以大部分時候你們不會撞在一起。但有三條規矩要守：</p>
+<ol>
+<li><b>開工前先點一次「上線」</b>（就算沒改東西）。它會把對方的最新版本抓下來。</li>
+<li><b>同一天不要兩個人改同一個檔案。</b>先說一聲「我今天動 content.js」。</li>
+<li><b>改完當天就上線</b>，不要累積好幾天。改得越少，出問題越好找。</li>
+</ol>
+<div class="note">如果「上線」說送不上去，通常就是兩個人改到同一個地方了。
+<b>不要自己試著修</b>，把畫面截圖傳給 Jessie，三分鐘就解決。</div>
+
+<h2>卡住的時候</h2>
+<table>
+<tr><th>狀況</th><th>怎麼辦</th></tr>
+<tr><td>畫面一片空白</td><td>通常是漏了一個括號或引號。點「還原」，重改一次</td></tr>
+<tr><td>改了沒反應</td><td>檔案存檔了嗎？瀏覽器按 ⌘R 了嗎？</td></tr>
+<tr><td>手機上沒更新</td><td>已經加到主畫面的話，要把 app 完全關掉再開</td></tr>
+<tr><td>越改越亂</td><td>點「還原」。這就是它存在的理由</td></tr>
+<tr><td>不知道改哪裡</td><td>問 Claude Code：「我想改 ⋯⋯，要動哪個檔案？」</td></tr>
+</table>
+
+<h2>關於這個 app 本身</h2>
+<p>有兩件事在改任何東西之前要知道，因為它們會影響你的判斷：</p>
+<ul>
+<li><b>視標大小是這個 app 唯一真正重要的變數。</b>其他都是為了讓小孩願意每天打開。
+所以「好玩」和「有效」不衝突——不好玩她就不練，不練就沒有效。</li>
+<li><b>這不是醫療器材，也不能治療疾病。</b>所以文案裡<b>絕對不要出現「治療」「矯正」「改善視力」</b>
+這類字眼。它只是把練習時間記下來、自動調整難度。這一點之後要上架 App Store 時會被審查。</li>
+</ul>
+
+<h2>之後要上架 App Store</h2>
+<p>那是後面的事，而且不影響你現在做的任何事情——<b>現在改的東西，到時候原封不動會變成 app 裡面的內容。</b>
+你不用為了上架改變做法。</p>
+
+</div></body></html>

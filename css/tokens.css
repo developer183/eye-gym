@@ -1,0 +1,35 @@
+/* 顏色、字體、陰影。想換配色改這裡就好，其他檔案不用動。 */
+:root{
+  --paper:#F2F6F4; --surface:#FFFFFF; --sunken:#E6EDEA;
+  --fg:#0E2B33; --muted:#5B757E; --line:#D6E2DE;
+  --go:#148873; --go-soft:#D7EFE8;
+  /* 五個關卡的樣式沿用舊名，這三個是給它們用的別名 */
+  --mint:#148873; --mint-soft:#D7EFE8; --sun:#D9922A; --pcsh:rgba(0,0,0,.42);
+  --amber:#D9922A; --amber-soft:#FBEDD6; --warn:#C6553F;
+  --ink:#0E2B33; --onink:#DCEDE8; --onink-dim:#8FB2AB;
+  --shadow:0 1px 2px rgba(14,43,51,.05), 0 12px 28px -16px rgba(14,43,51,.35);
+  --lift:0 2px 6px rgba(14,43,51,.07), 0 18px 36px -18px rgba(14,43,51,.45);
+  --cjk:'PingFang TC','Noto Sans CJK TC','Noto Sans TC','Microsoft JhengHei',sans-serif;
+  --display:'Fredoka',var(--cjk);
+  --body:-apple-system,BlinkMacSystemFont,'Segoe UI',var(--cjk);
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light dark;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#06161B; --surface:#0E2730; --sunken:#0B1F26;
+  --fg:#DCEDE8; --muted:#86A6A0; --line:#1B3B44;
+  --go:#3FBFA2; --go-soft:#0C332F; --mint:#3FBFA2; --mint-soft:#0C332F; --sun:#E8B45E; --pcsh:rgba(0,0,0,.78); --amber:#E8B45E; --amber-soft:#2F2516; --warn:#E07A62;
+  --ink:#0A1E24; --onink:#DCEDE8; --onink-dim:#7FA09A;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 14px 30px -18px rgba(0,0,0,.8);
+  --lift:0 2px 6px rgba(0,0,0,.5), 0 20px 40px -20px rgba(0,0,0,.9);
+} }
+:root[data-theme="dark"]{
+  --paper:#06161B; --surface:#0E2730; --sunken:#0B1F26;
+  --fg:#DCEDE8; --muted:#86A6A0; --line:#1B3B44;
+  --go:#3FBFA2; --go-soft:#0C332F; --mint:#3FBFA2; --mint-soft:#0C332F; --sun:#E8B45E; --pcsh:rgba(0,0,0,.78); --amber:#E8B45E; --amber-soft:#2F2516; --warn:#E07A62;
+  --ink:#0A1E24; --onink:#DCEDE8; --onink-dim:#7FA09A;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 14px 30px -18px rgba(0,0,0,.8);
+  --lift:0 2px 6px rgba(0,0,0,.5), 0 20px 40px -20px rgba(0,0,0,.9);
+}

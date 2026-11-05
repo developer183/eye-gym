@@ -2,13 +2,28 @@
    策略：安裝時把全部檔案抓進快取，之後一律 cache-first。
    這是靜態 app，沒有任何要即時更新的內容，所以先吃快取是對的，也最快。
    版本字串由檔案內容雜湊產生：內容一改版本就變，新的 SW 會清掉舊快取。 */
-const VERSION = '2e59ac3213eb';
+const VERSION = '06692b95d7c3';
 const CACHE = 'eye-gym-' + VERSION;
 const ASSETS = [
   "./",
   "index.html",
   "manifest.json",
   "fonts.css",
+  "css/app.css",
+  "css/games.css",
+  "css/tokens.css",
+  "js/content.js",
+  "js/draw.js",
+  "js/engine.js",
+  "js/game-gap.js",
+  "js/game-maze.js",
+  "js/game-pile.js",
+  "js/game-same.js",
+  "js/game-schulte.js",
+  "js/games.js",
+  "js/state.js",
+  "js/ui.js",
+  "js/util.js",
   "img/alien.png",
   "img/ant.png",
   "img/apple.png",

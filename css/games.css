@@ -1,0 +1,112 @@
+/* 五個關卡自己的樣式。 */
+/* ---- 以下是五個關卡的樣式，沿用原本測過的版本 ---- */
+.grid{display:grid;justify-content:center;align-content:center;gap:var(--gap)}
+.cellbtn{display:grid;place-items:center;border-radius:10px;padding:0;background:transparent;line-height:0}
+.cellbtn.hit{background:var(--mint-soft)}
+.cellbtn.sel{background:var(--mint-soft);box-shadow:inset 0 0 0 2px var(--mint)}
+.streak{display:inline-flex;align-items:center;margin-left:8px;padding:3px 10px;border-radius:999px;
+  background:var(--sun);color:#3a2900;font-size:11.5px;font-weight:700;letter-spacing:.02em;
+  font-variant-numeric:tabular-nums;animation:pop .42s cubic-bezier(.3,1.5,.5,1)}
+.cellbtn.bad{animation:shake .32s}
+.cellbtn.hit{animation:pop .36s cubic-bezier(.3,1.5,.5,1)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@keyframes pop{0%{transform:scale(1)}42%{transform:scale(1.24)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.cellbtn.bad,.cellbtn.hit{animation:none}.cellbtn.bad{opacity:.35}*{transition-duration:.01ms!important}}
+
+/* 點下去的亮光，以及飛向托盤的那一隻 */
+/* 光環而不是光團：中心留空，白底黑底都看得見 */
+.flash{position:fixed;z-index:60;pointer-events:none;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0) 12%,rgba(255,246,214,.9) 34%,rgba(255,206,74,.7) 50%,rgba(255,196,50,0) 70%)}
+.flyer{position:fixed;z-index:55;pointer-events:none;will-change:transform}
+.flyer img{width:100%;height:100%;display:block}
+@keyframes slotpop{0%{transform:scale(.45)}62%{transform:scale(1.16)}100%{transform:scale(1)}}
+@keyframes clearpop{0%{transform:scale(1);opacity:1}38%{transform:scale(1.28);opacity:1}100%{transform:scale(.15);opacity:0}}
+.slot.pop img{animation:slotpop .34s cubic-bezier(.3,1.4,.5,1)}
+.slot.clearing{animation:clearpop .3s ease forwards}
+
+.schulte{display:grid;gap:5px}
+.schulte button{background:var(--bgf);color:var(--fgt);border-radius:8px;font-family:var(--mono);font-weight:600;
+  border:1px solid color-mix(in srgb,var(--fgt) 18%,transparent);display:grid;place-items:center}
+.schulte button.done{opacity:.16}
+
+.dpad{display:grid;grid-template-columns:repeat(3,54px);grid-template-rows:repeat(2,44px);gap:6px;justify-content:center;margin-top:2px}
+.dpad button{background:var(--surface);border:1px solid var(--line);border-radius:12px;font-size:17px;color:var(--muted)}
+.dpad button:active{background:var(--mint);color:#fff}
+.dpad .sp{grid-column:2}
+
+/* ---- 三個一組（堆疊配對） ---- */
+/* z-index:0 是關鍵：讓 .pc 的堆疊順序關在 .pile 裡面。
+   沒有它，position:relative 不會建立堆疊脈絡，圖案的 z-index（可以到 100 以上）
+   會直接跟頁面上的對話框比大小，把「盒子滿了」壓在底下。 */
+.pile{position:relative;z-index:0;width:100%;height:100%;justify-self:stretch;align-self:stretch;
+  overflow:hidden;border-radius:12px;--pcsh:rgba(0,0,0,.42)}
+.pile .bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.pc{position:absolute;pointer-events:none;filter:drop-shadow(0 2px 3px var(--pcsh));transition:transform .14s ease,opacity .14s ease}
+.pc img{width:100%;height:100%;display:block;pointer-events:none;-webkit-user-drag:none}
+.tray{margin-top:10px;display:flex;flex-direction:column;gap:9px;align-items:center}
+.slots{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;width:100%;max-width:370px;
+  padding:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.slot{aspect-ratio:1;border-radius:8px;background:var(--bgf,var(--sunken));padding:3px;
+  border:1px dashed color-mix(in srgb,var(--fg) 15%,transparent);display:grid;place-items:center}
+.slot.full{border-style:solid;border-color:transparent}
+.slot img{width:100%;height:100%;object-fit:contain;display:block}
+.tri{position:relative;display:block;width:46px;height:38px}
+.tri img{position:absolute;width:23px;height:23px}
+.tri img:nth-child(1){left:0;top:3px;transform:rotate(-13deg)}
+.tri img:nth-child(2){left:11px;top:14px;transform:rotate(9deg)}
+.tri img:nth-child(3){left:23px;top:0;transform:rotate(17deg)}
+.tools{display:flex;gap:8px}
+.tools button{padding:7px 15px;border-radius:11px;border:1px solid var(--line);background:var(--surface);font-size:13px}
+.tools button:active{background:var(--mint);color:#fff}
+.tools button:disabled{opacity:.4}
+
+
+/* ---- 覆蓋層 ---- */
+.sheet{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;
+  background:color-mix(in srgb,var(--paper) 84%,transparent);backdrop-filter:blur(8px);
+  animation:fade .2s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet .box{background:var(--surface);border:1px solid var(--line);border-radius:24px;
+  box-shadow:var(--lift);padding:26px 22px;max-width:340px;width:100%;text-align:center;
+  animation:rise .28s cubic-bezier(.22,.9,.3,1)}
+@keyframes rise{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+.sheet h3{font-family:var(--display);font-weight:600;font-size:21px;margin:0 0 6px}
+.sheet p{font-size:13.5px;color:var(--muted);line-height:1.75;margin:0}
+.stars{font-size:29px;letter-spacing:6px;margin:14px 0 2px;color:var(--amber)}
+.score{display:flex;gap:14px;justify-content:center;margin:16px 0 20px}
+.score .k{font-size:10.5px;color:var(--muted);letter-spacing:.05em}
+.score .v{font-family:var(--display);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.primary{width:100%;padding:14px;border-radius:14px;background:var(--go);color:#04221C;
+  font-weight:600;font-size:15.5px;font-family:var(--display)}
+.link{margin-top:10px;font-size:13.5px;color:var(--muted);width:100%;padding:9px}
+.restnum{font-family:var(--display);font-size:58px;font-weight:600;color:var(--go);
+  font-variant-numeric:tabular-nums;margin:8px 0}
+
+/* ---- 第一次設定 ---- */
+.steps{display:flex;gap:6px;margin:0 0 20px}
+.steps i{flex:1;height:4px;border-radius:99px;background:var(--sunken)}
+.steps i.on{background:var(--go)}
+
+/* ---- 回診報告卡 ---- */
+.rpt{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;
+  box-shadow:var(--shadow)}
+.rpt h4{font-family:var(--display);font-size:16px;margin:0 0 2px;font-weight:600}
+.rpt .meta{font-size:11.5px;color:var(--muted);margin-bottom:14px;font-family:var(--mono)}
+.rpt table{width:100%;border-collapse:collapse;font-size:13px}
+.rpt td{padding:7px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.rpt td:last-child{text-align:right;font-family:var(--mono);font-weight:600}
+.rpt .foot{font-size:11px;color:var(--muted);line-height:1.7;margin-top:12px}
+
+/* ---- 安裝提示 ---- */
+.install{margin-top:16px;background:var(--go-soft);border-radius:14px;padding:13px 14px;
+  font-size:12.5px;line-height:1.7;color:var(--fg)}
+.install b{font-weight:600}
+
+/* 「三個一組」上方的任務標籤。重建外殼時漏掉這一段，
+   結果圖示用原始 128px 顯示，把題目列撐到 266px 高。 */
+.objs{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.obj{display:inline-flex;align-items:center;gap:5px;padding:4px 10px 4px 5px;border-radius:999px;
+  background:var(--surface);border:1px solid var(--line);font-size:12.5px;font-weight:600;
+  font-variant-numeric:tabular-nums;transition:background .25s,border-color .25s,color .25s}
+.obj img{width:24px;height:24px;display:block}
+.obj.done{background:var(--mint-soft);border-color:var(--mint);color:var(--mint)}

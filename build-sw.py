@@ -10,7 +10,10 @@ import os, hashlib, json
 root = os.path.dirname(os.path.abspath(__file__))
 os.chdir(root)
 
+# 說明書和點兩下的腳本是給開發用的，不進 app 的離線快取
 assets = ['./', 'index.html', 'manifest.json', 'fonts.css']
+assets += sorted('css/' + f for f in os.listdir('css') if f.endswith('.css'))
+assets += sorted('js/' + f for f in os.listdir('js') if f.endswith('.js'))
 assets += sorted('img/' + f for f in os.listdir('img') if f.endswith('.png'))
 assets += sorted('fonts/' + f for f in os.listdir('fonts') if f.endswith('.woff2'))
 

@@ -143,6 +143,7 @@ PR 的必要核准數設成 0——GitHub 不讓作者核准自己的 PR，設�
 
 | 檔案 | 誰用 | 做什麼 |
 |---|---|---|
+| `安裝到新電腦.command` | 她 | **單獨傳給她的那一個檔案。**不需要先有 repo：check git → clone public repo 到桌面 → 開資料夾與說明 |
 | `設定這台電腦.command` | 她 | 新電腦第一次：檢查 git／python／gh、帶著登入、設 noreply 署名、裝 QR 工具 |
 | `開發.command` | 兩人 | 先 `git pull --ff-only`，再起本機網站（綁區網）並印出 QR code |
 | `送出給 Jessie 檢查.command` | 她 | build-sw → 開 `edit-<時間>` 分支 → rebase → push → 開 PR |

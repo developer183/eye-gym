@@ -23,9 +23,22 @@ else no "沒有安裝"; echo "     → 到 python.org 下載安裝"; fi
 step "檢查 gh（GitHub 工具）"
 if command -v gh >/dev/null; then ok "$(gh --version | head -1 | awk '{print $3}')"
 else
-  no "沒有安裝"
-  echo "     → 開終端機輸入：brew install gh"
-  echo "       沒有 brew 的話先裝：https://brew.sh"
+  echo "還沒有"
+  if command -v brew >/dev/null; then
+    echo ""
+    read -r -p "     要現在幫你裝嗎？（y／直接 Enter 跳過）： " YN
+    if [ "$YN" = "y" ]; then
+      echo "     → 安裝中，大約一兩分鐘…"
+      brew install gh >/dev/null 2>&1
+      command -v gh >/dev/null && echo "     ✓ 裝好了" || { echo "     ✗ 裝不起來"; FAIL=1; }
+    else FAIL=1; fi
+  else
+    FAIL=1
+    echo ""
+    echo "     → 瀏覽器會打開 cli.github.com，下載那個 macOS 的安裝檔（.pkg），"
+    echo "       點兩下照著按完，然後再點兩下「設定這台電腦」一次。"
+    ( sleep 2; open "https://cli.github.com" ) &
+  fi
 fi
 
 if command -v gh >/dev/null; then
@@ -70,7 +83,7 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
   ok "$(git config --get remote.origin.url | sed 's#.*/##')"
 else
   no "這不是從 GitHub 下載下來的資料夾"
-  echo "     → 要先 clone：gh repo clone graylightai/eye-gym"
+  echo "     → 用「安裝到新電腦.command」重新下載一份，不要用複製貼上的資料夾"
 fi
 
 echo ""

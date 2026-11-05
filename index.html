@@ -134,6 +134,9 @@
     <h2>回診報告</h2>
     <p class="lede">截圖這一張給醫師看。數字都是這個 app 自己量到的，不是醫學檢查。</p>
     <div class="rpt" id="rpt"></div>
+    <div class="duo"><button class="ghost" id="copyRpt">複製成文字</button>
+      <button class="ghost" id="shareRpt">分享</button></div>
+    <div class="readout" id="rptOut"></div>
   </main>
 
   <!-- ============ 設定 ============ -->
@@ -207,6 +210,19 @@
         <input type="range" id="calRange" min="180" max="420" step="1" aria-label="卡片寬度校準">
         <div class="readout" id="calOut"></div>
       </div>
+    </div>
+
+    <h2>備份</h2>
+    <div class="set">
+      <div class="lab">把紀錄存成一個檔案</div>
+      <div class="sub">所有資料只存在這台手機的瀏覽器裡。清掉瀏覽器資料、換手機、
+        或系統在空間不足時清快取，紀錄就沒了。<b>定期存一份</b>，換手機時也用它搬過去。</div>
+      <div class="duo">
+        <button class="ghost" id="expBtn">匯出備份</button>
+        <button class="ghost" id="impBtn">匯入備份</button>
+      </div>
+      <input type="file" id="impFile" accept="application/json,.json" hidden>
+      <div class="readout" id="backupOut"></div>
     </div>
 
     <h2>孩子</h2>

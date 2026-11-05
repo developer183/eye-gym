@@ -20,13 +20,20 @@ let CURID = load('eg.cur', null);
 let P = load('eg.pref', { night: false, color: true, bg: true, sound: true, haptic: true });
 let K = null, D = null;
 
-const blankData = () => ({ perf: {}, g: {}, days: {}, log: [] });
+const blankData = () => ({ perf: {}, hist: {}, g: {}, days: {}, log: [] });
 function useKid(id) {
   K = KIDS.find(k => k.id === id) || KIDS[0];
   if (!K) return;
   CURID = K.id; save('eg.cur', CURID);
   D = load('eg.d.' + K.id, blankData());
-  for (const f of ['perf', 'g', 'days', 'log']) D[f] = D[f] || (f === 'log' ? [] : {});
+  for (const f of ['perf', 'hist', 'g', 'days', 'log']) D[f] = D[f] || (f === 'log' ? [] : {});
+  // 舊版沒有 hist，用當時的短期窗補一份，免得已經在用的人穩定視標歸零
+  if (!Object.keys(D.hist).length && Object.keys(D.perf).length) {
+    for (const L in D.perf) {
+      const a = D.perf[L];
+      D.hist[L] = { n: a.length, ok: a.reduce((s2, x) => s2 + x.ok, 0) };
+    }
+  }
   syncS();
 }
 const saveKid = () => { save('eg.kids', KIDS); syncS(); };

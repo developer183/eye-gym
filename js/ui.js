@@ -3,7 +3,9 @@
    流程
    ======================================================================= */
 let view = 'home', round = null, SESS = null, tick = null, qT0 = 0;
-const GORDER = ['gap', 'pile', 'same', 'maze', 'schulte'];
+/* 關卡順序直接從 GAMES 讀，順序就是 index.html 裡 <script> 的載入順序。
+   新增一關只要寫一個 js/game-xxx.js 再加一行 <script>，這裡不用動。 */
+const GORDER = Object.keys(GAMES);
 
 function show(v) {
   document.querySelectorAll('.page').forEach(p => p.classList.toggle('on', p.id === v));
@@ -68,8 +70,9 @@ function renderFree() {
   const host = $('#freeList'); host.replaceChildren();
   GORDER.forEach(id => {
     const g = GAMES[id];
+    let th = ''; try { th = g.thumb(); } catch { th = '🎯'; }
     const b = el('button', 'row');
-    b.innerHTML = `<div class="ic">${g.thumb()}</div>
+    b.innerHTML = `<div class="ic">${th}</div>
       <div style="flex:1"><div class="t">${TEXT[id]?.name || g.name}</div>
         <div class="d">${TEXT[id]?.desc || g.desc}</div></div>
       <div class="go2">›</div>`;
@@ -128,6 +131,7 @@ function nextQ() {
   $('#field').replaceChildren();
   $('#extra').replaceChildren();
   qT0 = performance.now();
+  try {
   g.render($('#field'), {
     pass: () => {
       note(round.id, true, performance.now() - qT0);
@@ -146,6 +150,17 @@ function nextQ() {
       ]);
     }
   });
+  } catch (err) {
+    // 某一關的程式壞掉時，不要讓整個 app 跟著死——跳過它，其他關照常。
+    console.error('關卡出錯', round.id, err);
+    GAMES[round.id]?.cleanup?.(); clearInterval(tick);
+    sheet(`<h3>這一關出了問題</h3>
+      <p>「${GAMES[round.id]?.name || round.id}」沒辦法開始，先跳過它。<br>
+      <span style="font-family:var(--mono);font-size:11.5px">${String(err.message || err).slice(0, 90)}</span></p>`,
+      [['跳過這一關', () => { close_(); SESS.plan = SESS.plan.filter(x => x !== round.id);
+          SESS.plan.length ? runNext() : show('home'); }],
+       ['回首頁', () => { close_(); show('home'); }, 'link']]);
+  }
 }
 
 function finish() {
@@ -481,3 +496,95 @@ const secure = location.protocol === 'https:' || ['localhost', '127.0.0.1'].incl
 if ('serviceWorker' in navigator && secure) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
+
+/* =======================================================================
+   備份與還原
+   資料只在這台裝置的 localStorage。瀏覽器清資料、換手機、
+   或系統空間不足時清快取，紀錄就沒了——所以要能匯出一份。
+   ======================================================================= */
+function collectBackup() {
+  const d = { v: 1, at: new Date().toISOString(), pref: P, kids: KIDS, data: {} };
+  KIDS.forEach(k => { d.data[k.id] = load('eg.d.' + k.id, blankData()); });
+  return d;
+}
+function applyBackup(j) {
+  if (!j || j.v !== 1 || !Array.isArray(j.kids)) throw new Error('這不是目力練功房的備份檔');
+  KIDS = j.kids; save('eg.kids', KIDS);
+  if (j.pref) { P = j.pref; save('eg.pref', P); }
+  Object.keys(j.data || {}).forEach(id => save('eg.d.' + id, j.data[id]));
+  useKid(KIDS[0] && KIDS[0].id);
+}
+$('#expBtn').onclick = async () => {
+  const txt = JSON.stringify(collectBackup());
+  const name = `目力練功房備份-${today()}.json`;
+  const out = $('#backupOut');
+  try {
+    const file = new File([txt], name, { type: 'application/json' });
+    // iPhone 加到主畫面之後下載連結不一定會動，有分享面板就優先用
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], title: name });
+      out.textContent = '已送出，選「儲存到檔案」就存下來了'; return;
+    }
+  } catch { /* 使用者取消分享也走到這裡，往下用下載 */ }
+  const url = URL.createObjectURL(new Blob([txt], { type: 'application/json' }));
+  const a = el('a'); a.href = url; a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  out.textContent = `已匯出 ${KIDS.length} 位孩子的紀錄`;
+};
+$('#impBtn').onclick = () => $('#impFile').click();
+$('#impFile').onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    let j; try { j = JSON.parse(rd.result); } catch { return bk('檔案讀不開，不是有效的備份檔'); }
+    sheet(`<h3>匯入備份？</h3><p>備份裡有 <b>${(j.kids || []).length}</b> 位孩子
+      （${(j.kids || []).map(k => k.name).join('、') || '—'}），
+      建立於 ${String(j.at || '').slice(0, 10)}。<br><br>
+      <b>現在這台裝置上的紀錄會被覆蓋掉，沒辦法復原。</b></p>`,
+      [['確定匯入', () => {
+        try { applyBackup(j); close_(); renderSettings(); bk('匯入完成'); }
+        catch (err) { close_(); bk(err.message); }
+      }], ['取消', () => close_(), 'link']]);
+  };
+  rd.readAsText(f);
+  e.target.value = '';
+};
+const bk = m => { $('#backupOut').textContent = m; };
+
+/* ---------- 回診報告：轉成純文字 ----------
+   看診時用講的或貼訊息比截圖方便，截圖還會因為頁面太長而捲動。 */
+function reportText() {
+  const days = Object.keys(D.days).sort();
+  const trained = days.filter(d => D.days[d].sec > 0);
+  const since = trained[0] || today();
+  const span = Math.max(1, Math.round((Date.parse(today()) - Date.parse(since)) / DAY) + 1);
+  const totalSec = days.reduce((a, d) => a + D.days[d].sec, 0);
+  const sl = stableLevel(), m = sl ? LEVELS[sl - 1] : null;
+  return [
+    `${K.name}・目力練習紀錄`,
+    `${since} ～ ${today()}（${span} 天）`,
+    ``,
+    `醫囑遮眼：${K.patch === 'none' ? '未設定' : (K.patch === 'left' ? '左眼' : '右眼')}`,
+    `醫囑每日：${K.minutes} 分鐘`,
+    `有練習的天數：${trained.length} / ${span}`,
+    `達到每日時數：${trained.filter(d => D.days[d].met).length} 天`,
+    `累積時間：${Math.round(totalSec / 60)} 分鐘`,
+    `目前穩定視標：${m ? m + ' mm' : '樣本不足'}`,
+    `　換算（30 cm）：${m ? '約視力 ' + acuity(m).toFixed(2) : '—'}`,
+    `對比設定：${({ high: '高', mid: '中', low: '低' })[K.contrast]}`,
+    ``,
+    `※ 視標大小由 app 依正確率與反應時間自動調整。`,
+    `　「穩定視標」＝同一大小做滿 ${TUNE.穩定要幾題} 題且正確率達 ${Math.round(TUNE.穩定正確率 * 100)}% 的最細一級。`,
+    `　這不是視力檢查，數值僅供觀察趨勢，請以院所的正式檢查為準。`
+  ].join('\n');
+}
+$('#copyRpt').onclick = async () => {
+  try { await navigator.clipboard.writeText(reportText()); $('#rptOut').textContent = '已複製，可以直接貼給醫師'; }
+  catch { $('#rptOut').textContent = '這個瀏覽器不讓複製，改用「分享」'; }
+};
+$('#shareRpt').onclick = async () => {
+  try {
+    if (navigator.share) { await navigator.share({ title: `${K.name}・目力練習紀錄`, text: reportText() }); }
+    else { await navigator.clipboard.writeText(reportText()); $('#rptOut').textContent = '沒有分享功能，已改成複製'; }
+  } catch { /* 使用者取消 */ }
+};

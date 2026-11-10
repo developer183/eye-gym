@@ -10,7 +10,7 @@ GAMES.same = {
     const MODES = ['match', 'match', 'odd', 'pair', 'match', 'odd',
                    'pair', 'match', 'odd', 'pair', 'odd', 'pair'];
     const mode = MODES[round.idx % MODES.length];
-    const D = Math.round(mm(sizeMm()));
+    const D = Math.round(mm(sizeMm()) * SAME_SCALE);   // 比視標大，好看清楚
     const p = gridPlan(D, 6, 8);
     const n = Math.min(40, Math.max(6, p.cols * p.rows));
     // 連續答對三題之後，干擾項只差一個特徵——孩子表現好就自動變難

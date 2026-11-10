@@ -2,7 +2,7 @@
    策略：安裝時把全部檔案抓進快取，之後一律 cache-first。
    這是靜態 app，沒有任何要即時更新的內容，所以先吃快取是對的，也最快。
    版本字串由檔案內容雜湊產生：內容一改版本就變，新的 SW 會清掉舊快取。 */
-const VERSION = '53202ce58ce6';
+const VERSION = '5636aafd7777';
 const CACHE = 'eye-gym-' + VERSION;
 const ASSETS = [
   "./",

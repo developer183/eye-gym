@@ -77,6 +77,15 @@ function landoltC(dir, D) {
       transform="rotate(${dir * 90} ${c} ${c})"/></svg>`;
 }
 
+/** 翻滾 E 視標：邊長 D 的 5×5 格，筆畫與空隙都是 D/5。
+    dir 0 = 三隻腳朝右，之後每 +1 順時針轉 90 度（下、左、上），跟 DIRNAME 一致。 */
+function tumblingE(dir, D) {
+  const u = D / 5, c = D / 2, f = 'var(--fgt)';
+  const r = (x, y, w, h) => `<rect x="${(x * u).toFixed(2)}" y="${(y * u).toFixed(2)}" width="${(w * u).toFixed(2)}" height="${(h * u).toFixed(2)}" fill="${f}"/>`;
+  return `<svg width="${D}" height="${D}" viewBox="0 0 ${D} ${D}">
+    <g transform="rotate(${dir * 90} ${c} ${c})">${r(0, 0, 1, 5)}${r(0, 0, 5, 1)}${r(0, 2, 5, 1)}${r(0, 4, 5, 1)}</g></svg>`;
+}
+
 /** 小生物：外型 × 眼睛數 × 尾巴方向 × 耳朵，四個特徵各自獨立。
     7 種外型（圓形＋3～8 邊形）× 4 種眼睛 × 8 個尾巴方向 × 有無耳朵 = 448 種組合 */
 function creature(sp, D) {

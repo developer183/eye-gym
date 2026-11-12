@@ -9,6 +9,7 @@ GAMES.pile = {
   thumb: () => `<span class="tri"><img src="img/cat.png" alt=""><img src="img/frog.png" alt=""><img src="img/bee.png" alt=""></span>`,
   render(field, api) {
     const D = Math.max(Math.round(mm(sizeMm()) * 2.0), 26);
+    const SPEED = mm(motionMm());   // 設定裡選的移動速度，換成 px／秒
 
     /* 這一場派誰上場：同一組（狗／狼／狐狸這種）低精細度時只抽一種 */
     const perGroup = S.level <= 3 ? 1 : (S.level <= 5 ? 2 : 99);
@@ -90,20 +91,45 @@ GAMES.pile = {
       paint(p);
     }
     const paint = p => p.el.style.cssText =
-      `left:${p.x.toFixed(1)}px;top:${p.y.toFixed(1)}px;width:${D}px;height:${D}px;z-index:${p.z};` +
-      `transform:rotate(${p.rot.toFixed(1)}deg) scale(${p.sc.toFixed(3)});${filt}`;
+      `left:0;top:0;width:${D}px;height:${D}px;z-index:${p.z};` +
+      `transform:translate(${p.x.toFixed(1)}px,${p.y.toFixed(1)}px) rotate(${p.rot.toFixed(1)}deg) scale(${p.sc.toFixed(3)});${filt}`;
 
     const cells = shuffle([...Array(gc * gr).keys()]);
     list.forEach((t, i) => {
       const d = el('div', 'pc');
       d.innerHTML = imgFor(t);
       const p = { id: i, t, z: i, el: d };
+      // 每個圖案自己的漂移方向與速度（公釐／秒換成 px），還有一點點左右搖擺
+      const a = Math.random() * Math.PI * 2, v = SPEED * (.6 + Math.random() * .8);
+      p.vx = Math.cos(a) * v; p.vy = Math.sin(a) * v; p.vr = (Math.random() - .5) * 10;
       place(p, cells[i]);
       pieces.set(i, p);
       pile.append(d);
     });
     field.replaceChildren(pile);
     say();
+
+    /* 會動：醫師建議用移動中的目標練追視。每個圖案慢慢漂、碰到邊就反彈。
+       點擊判定（hitAt）用的就是這裡更新的 x/y/rot，所以點會動的圖案一樣準。
+       這一關結束或離開畫面時 pile 會被移出 DOM，迴圈看到就自己停。 */
+    let last = 0;
+    function drift(now) {
+      if (!pile.isConnected) return;
+      const dt = last ? Math.min(.05, (now - last) / 1000) : 0;   // 切到背景再回來不要一口氣跳很遠
+      last = now;
+      if (dt && SPEED > 0) {
+        const lo = M, hiX = W - D - M, hiY = H - D - M;
+        for (const p of pieces.values()) {
+          p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
+          if (p.x < lo) { p.x = lo; p.vx = Math.abs(p.vx); } else if (p.x > hiX) { p.x = hiX; p.vx = -Math.abs(p.vx); }
+          if (p.y < lo) { p.y = lo; p.vy = Math.abs(p.vy); } else if (p.y > hiY) { p.y = hiY; p.vy = -Math.abs(p.vy); }
+          if (Math.abs(p.rot) > 24) { p.rot = Math.sign(p.rot) * 24; p.vr = -p.vr; }
+          p.el.style.transform = `translate(${p.x.toFixed(1)}px,${p.y.toFixed(1)}px) rotate(${p.rot.toFixed(1)}deg) scale(${p.sc.toFixed(3)})`;
+        }
+      }
+      requestAnimationFrame(drift);
+    }
+    requestAnimationFrame(drift);
 
     /* 由上往下找第一個「不透明像素真的被點到」的圖案 */
     function hitAt(px, py) {

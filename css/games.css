@@ -32,7 +32,10 @@
 .dpad{display:grid;grid-template-columns:repeat(3,54px);grid-template-rows:repeat(2,44px);gap:6px;justify-content:center;margin-top:2px}
 .dpad button{background:var(--surface);border:1px solid var(--line);border-radius:12px;font-size:17px;color:var(--muted)}
 .dpad button:active{background:var(--mint);color:#fff}
-.dpad .sp{grid-column:2}
+/* 四個方向鍵明確指定位置：只給 ↑ 指定第 2 欄的話，← 會被自動排到第一列第 3 欄，變成右上角 */
+.dpad [data-d="n"]{grid-area:1/2}.dpad [data-d="w"]{grid-area:2/1}.dpad [data-d="s"]{grid-area:2/2}.dpad [data-d="e"]{grid-area:2/3}
+.dpad button.bad{animation:shake .32s}
+.tumble{line-height:0;padding:12px}
 
 /* ---- 三個一組（堆疊配對） ---- */
 /* z-index:0 是關鍵：讓 .pc 的堆疊順序關在 .pile 裡面。
@@ -41,7 +44,7 @@
 .pile{position:relative;z-index:0;width:100%;height:100%;justify-self:stretch;align-self:stretch;
   overflow:hidden;border-radius:12px;--pcsh:rgba(0,0,0,.42)}
 .pile .bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.pc{position:absolute;pointer-events:none;filter:drop-shadow(0 2px 3px var(--pcsh));transition:transform .14s ease,opacity .14s ease}
+.pc{position:absolute;pointer-events:none;filter:drop-shadow(0 2px 3px var(--pcsh));transition:opacity .14s ease;will-change:transform}
 .pc img{width:100%;height:100%;display:block;pointer-events:none;-webkit-user-drag:none}
 .tray{margin-top:10px;display:flex;flex-direction:column;gap:9px;align-items:center}
 .slots{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;width:100%;max-width:370px;

@@ -13,7 +13,7 @@ const acuity = m => 1 / ((m / 5) / VIEW_MM * 3437.7468);
 const newKid = name => ({
   id: 'k' + Date.now().toString(36) + rnd(999).toString(36),
   name: name || '寶貝', patch: 'none', minutes: 10, rest: 10,
-  level: 3, auto: true, contrast: 'high', calPx: 0, born: today()
+  level: 3, auto: true, contrast: 'high', motion: MOTION_DEFAULT, calPx: 0, born: today()
 });
 let KIDS = load('eg.kids', []);
 let CURID = load('eg.cur', null);
@@ -50,3 +50,7 @@ function syncS() {
 const pxPerMm = () => (K && K.calPx > 0) ? K.calPx / CARD_MM : CSS_PX_PER_MM;
 const mm = v => v * pxPerMm();
 const sizeMm = () => LEVELS[S.level - 1];
+/** 目前孩子設定的圖案移動速度。舊資料沒有這個欄位，就用預設檔 */
+const motionKey = () => (K && MOTION[K.motion]) ? K.motion : MOTION_DEFAULT;
+const motionMm = () => MOTION[motionKey()][1];
+const motionLabel = () => { const [lab, v] = MOTION[motionKey()]; return v ? `${lab}（${v} mm/秒）` : lab; };

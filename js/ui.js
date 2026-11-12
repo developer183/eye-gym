@@ -321,6 +321,7 @@ function renderReport() {
       <tr><td>目前穩定視標</td><td>${m ? m + ' mm' : '樣本不足'}</td></tr>
       <tr><td>　換算（30 cm）</td><td>${m ? '約 ' + acuity(m).toFixed(2) : '—'}</td></tr>
       <tr><td>對比設定</td><td>${({ high: '高', mid: '中', low: '低' })[K.contrast]}</td></tr>
+      <tr><td>圖案移動</td><td>${motionLabel()}</td></tr>
     </table>
     <div class="foot">視標大小由 app 依正確率與反應時間自動調整，「穩定視標」指同一個大小做滿 10 題
     且正確率達 80% 的最細一級。<b>這不是視力檢查，數值僅供觀察趨勢</b>，
@@ -346,6 +347,7 @@ function renderSettings() {
   seg('#segAuto', [[true, '自動調整'], [false, '我自己設']], () => K.auto, v => K.auto = v);
   seg('#segLevel', LEVELS.map((m, i) => [i + 1, String(i + 1)]), () => K.level, v => K.level = v);
   seg('#segContrast', [['high', '高'], ['mid', '中'], ['low', '低']], () => K.contrast, v => K.contrast = v);
+  seg('#segMotion', Object.entries(MOTION).map(([k, [lab]]) => [k, lab]), motionKey, v => K.motion = v);
   seg('#segNight', [[false, '一般'], [true, '夜間']], () => P.night, v => P.night = v);
   seg('#segColor', [[true, '彩色'], [false, '單色（更難）']], () => P.color, v => P.color = v);
   seg('#segBg', [[true, '花樣背景'], [false, '素面背景']], () => P.bg, v => P.bg = v);
@@ -572,6 +574,7 @@ function reportText() {
     `目前穩定視標：${m ? m + ' mm' : '樣本不足'}`,
     `　換算（30 cm）：${m ? '約視力 ' + acuity(m).toFixed(2) : '—'}`,
     `對比設定：${({ high: '高', mid: '中', low: '低' })[K.contrast]}`,
+    `圖案移動：${motionLabel()}`,
     ``,
     `※ 視標大小由 app 依正確率與反應時間自動調整。`,
     `　「穩定視標」＝同一大小做滿 ${TUNE.穩定要幾題} 題且正確率達 ${Math.round(TUNE.穩定正確率 * 100)}% 的最細一級。`,

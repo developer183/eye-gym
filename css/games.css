@@ -37,6 +37,11 @@
 .dpad button.bad{animation:shake .32s}
 .tumble{line-height:0;padding:12px}
 
+/* ---- 太空守衛（射擊） ---- */
+.shootcv{display:block;touch-action:none;justify-self:center;align-self:center}
+.hearts{color:#B08A7A;letter-spacing:1px}.hearts .lost{opacity:.25}
+.combo{color:var(--mint);font-weight:700}.best{opacity:.6;font-weight:500}
+
 /* ---- 三個一組（堆疊配對） ---- */
 /* z-index:0 是關鍵：讓 .pc 的堆疊順序關在 .pile 裡面。
    沒有它，position:relative 不會建立堆疊脈絡，圖案的 z-index（可以到 100 以上）
